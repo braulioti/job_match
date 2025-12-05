@@ -6,6 +6,7 @@
 [![Python](https://img.shields.io/badge/python-3670A0?style=for-the-badge&logo=python&logoColor=ffdd54)](https://www.python.org/)
 [![SQLite](https://img.shields.io/badge/sqlite-%2307405e.svg?style=for-the-badge&logo=sqlite&logoColor=white)](https://sqlite.org/)
 [![Flask](https://img.shields.io/badge/flask-%23000.svg?style=for-the-badge&logo=flask&logoColor=white)](https://flask.palletsprojects.com/en/stable/)
+[![Docker](https://img.shields.io/badge/docker-%230db7ed.svg?style=for-the-badge&logo=docker&logoColor=white)](https://www.docker.com/)
 
 Serviço de avaliação de currículos para avaliar o grau de aderência do currículo com a vaga.
 
@@ -18,9 +19,13 @@ Novas atualizações do projeto podem ser acompanhadas através do X:
 - [Estrutura do Projeto](#estrutura-do-projeto)
   - [Aplicação Desktop](#aplicação-desktop)
   - [Projeto Backend API](#projeto-backend-api)
+  - [Integração Contínua](#integração-contínua)
 - [Requisitos](#requisitos)
 - [Instalação](#instalação)
-- [Build da Versão Desktop](#build-da-versão-desktop)
+- [Versão Desktop](#versão-desktop)
+  - [Build da versão](#build-da-versão)
+  - [Arquivos e pastas que precisam ser distribuídos](#arquivos-e-pastas-que-precisam-ser-distribuídos)
+  - [Configurações do arquivo servers](#configurações-do-arquivo-servers)
 - [Projeto Backend API](#projeto-backend-api-1)
   - [Health Check Endpoint](#health-check-endpoint)
   - [API v1](#api-v1)
@@ -81,8 +86,10 @@ desktop/
 ### Projeto Backend API
 
 ```
-API/
+api/
 ├── app.py              # Aplicação principal Flask
+├── wsgi.py             # Entry point WSGI para Gunicorn
+├── Dockerfile          # Configuração Docker para a API
 ├── requirements.txt    # Dependências do projeto
 ├── README.md          # Documentação da API
 ├── config/            # Configurações
@@ -99,12 +106,23 @@ API/
     └── helpers.py
 ```
 
+### Integração Contínua
+
+```
+ci-cd/
+└── docker/                  # Configurações Docker para a API
+    ├── docker-compose.yml   # Arquivo de composição Docker
+    └── .dockerignore        # Arquivos ignorados no build Docker
+```
+
 ## Requisitos
 
 - Python 3.8 ou superior
 - Tkinter (incluído com Python)
 - SQLite (Aplicação Desktop)
 - Flask 3.0.0 ou superior
+- Docker Engine 20.10 ou superior
+- Docker Compose 2.0 ou superior
 
 ## Instalação
 
