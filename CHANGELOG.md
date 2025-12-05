@@ -11,3 +11,4 @@
 - Adicionado o container docker para integração contínua
 - Criado documentação do projeto com swagger
 - Criado a tela Splash da aplicação desktop
+- Exibido o status do servidor na barra de status da aplicação Desktop

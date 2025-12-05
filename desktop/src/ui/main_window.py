@@ -182,16 +182,38 @@ class MainWindow:
         status_frame = ttk.Frame(main_frame)
         status_frame.grid(row=3, column=0, sticky=(tk.W, tk.E), pady=(10, 0))
         
-        self.status_label = ttk.Label(
+        self.status_label = tk.Label(
             status_frame,
             text="",
-            font=('Segoe UI', 9)
+            font=('Segoe UI', 9),
+            bg='#f0f0f0'
         )
         self.status_label.grid(row=0, column=0, sticky=tk.W)
     
     def update_status(self, message):
         """Update the status bar message"""
         self.status_label.config(text=message)
+    
+    def update_server_status(self, message, is_online):
+        """
+        Update the server status in the status bar
+        
+        Args:
+            message: Status message to display
+            is_online: True if server is online, False otherwise
+        """
+        if is_online:
+            self.status_label.config(
+                text=message,
+                font=('Segoe UI', 9, 'bold'),
+                fg='#2e7d32'  # Green color
+            )
+        else:
+            self.status_label.config(
+                text=message,
+                font=('Segoe UI', 9, 'bold'),
+                fg='#c62828'  # Red color
+            )
     
     def _update_selected_project(self, name, description):
         """Update the selected project information display"""

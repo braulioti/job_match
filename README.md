@@ -56,7 +56,7 @@ desktop/
     ├── app.py             # Classe principal da aplicação
     ├── ui/                # Componentes de interface
     │   ├── __init__.py
-    │   ├── main_window.py        # Janela principal
+    │   ├── main_window.py        # Janela principal com barra de status
     │   ├── splash_screen.py     # Tela de splash com barra de progresso
     │   ├── new_project_dialog.py # Diálogo de cadastro de projeto
     │   ├── about_dialog.py       # Diálogo sobre a aplicação
@@ -77,7 +77,7 @@ desktop/
     │   └── server.py      # Interface para estrutura de servidor
     ├── integration/       # Integrações com serviços externos
     │   ├── __init__.py
-    │   └── server_integration.py  # Integração com servidores
+    │   └── server_integration.py  # Integração com servidores (health check)
     ├── utils/             # Funções utilitárias
     │   ├── __init__.py
     │   └── helpers.py

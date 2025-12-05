@@ -7,3 +7,4 @@ pyinstaller-hooks-contrib==2024.8
 # Core dependencies
 Pillow>=10.0.0  # For image handling (logo in About dialog)
 platformdirs>=3.0.0  # Required by pkg_resources (used by PyInstaller)
+requests>=2.31.0  # For HTTP requests to API
