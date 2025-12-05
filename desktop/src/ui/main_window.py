@@ -4,8 +4,10 @@ Main Window UI Component
 
 import tkinter as tk
 from tkinter import ttk
+from PIL import Image, ImageTk
 from src.ui.new_project_dialog import NewProjectDialog
 from src.ui.about_dialog import AboutDialog
+from src.config.settings import Settings
 
 
 class MainWindow:
@@ -71,14 +73,54 @@ class MainWindow:
         main_frame.columnconfigure(0, weight=1)
         main_frame.rowconfigure(2, weight=1)
         
-        # Header
-        header_label = tk.Label(
-            main_frame,
-            text="Job Match - Avaliação de Currículos",
-            font=('Segoe UI', 16, 'bold'),
-            anchor=tk.CENTER
+        # Header frame
+        header_frame = ttk.Frame(main_frame)
+        header_frame.grid(row=0, column=0, sticky=(tk.W, tk.E), pady=(0, 20))
+        header_frame.columnconfigure(0, weight=1)
+        
+        # Logo
+        logo_path = Settings.get_logo_path()
+        if logo_path.exists():
+            try:
+                img = Image.open(str(logo_path))
+                img.thumbnail((300, 300), Image.Resampling.LANCZOS)
+                self.logo_photo = ImageTk.PhotoImage(img)
+                
+                logo_label = tk.Label(
+                    header_frame,
+                    image=self.logo_photo,
+                    bg='#f0f0f0'
+                )
+                logo_label.grid(row=0, column=0, pady=(0, 5))
+            except Exception as e:
+                # Fallback to text if image fails to load
+                header_label = tk.Label(
+                    header_frame,
+                    text="Job Match - Avaliação de Currículos",
+                    font=('Segoe UI', 16, 'bold'),
+                    anchor=tk.CENTER,
+                    bg='#f0f0f0'
+                )
+                header_label.grid(row=0, column=0, sticky=(tk.W, tk.E))
+                print(f"Erro ao carregar logo: {e}")
+        else:
+            # Fallback to text if logo file doesn't exist
+            header_label = tk.Label(
+                header_frame,
+                text="Job Match - Avaliação de Currículos",
+                font=('Segoe UI', 16, 'bold'),
+                anchor=tk.CENTER,
+                bg='#f0f0f0'
+            )
+            header_label.grid(row=0, column=0, sticky=(tk.W, tk.E))
+        
+        # Subtitle
+        subtitle_label = ttk.Label(
+            header_frame,
+            text="Avaliação de Currículos",
+            font=('Segoe UI', 16, 'bold')
         )
-        header_label.grid(row=0, column=0, sticky=(tk.W, tk.E), pady=(0, 20))
+        subtitle_label.grid(row=1, column=0, pady=(0, 0))
         
         # Selected project info frame
         project_info_frame = ttk.Frame(main_frame)

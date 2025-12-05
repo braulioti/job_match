@@ -4,3 +4,4 @@
 #### Features
 - Criada estrutura básica de frontend
 - Criado tela para criar novo projeto
+- Definido as imagens do projeto
