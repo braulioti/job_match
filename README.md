@@ -57,6 +57,7 @@ desktop/
     ├── ui/                # Componentes de interface
     │   ├── __init__.py
     │   ├── main_window.py        # Janela principal
+    │   ├── splash_screen.py     # Tela de splash com barra de progresso
     │   ├── new_project_dialog.py # Diálogo de cadastro de projeto
     │   ├── about_dialog.py       # Diálogo sobre a aplicação
     │   ├── configuration_dialog.py # Diálogo de configurações

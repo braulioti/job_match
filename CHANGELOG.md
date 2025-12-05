@@ -10,3 +10,4 @@
 - Criado a tela de configuração para definir o servidor
 - Adicionado o container docker para integração contínua
 - Criado documentação do projeto com swagger
+- Criado a tela Splash da aplicação desktop
