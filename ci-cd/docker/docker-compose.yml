@@ -1,0 +1,37 @@
+services:
+  job-match-api:
+    build:
+      context: ../../api
+      dockerfile: Dockerfile
+    container_name: job-match-api
+    ports:
+      - "${API_PORT:-5000}:5000"
+    environment:
+      - FLASK_APP=app.py
+      - FLASK_ENV=${FLASK_ENV:-production}
+      - PYTHONUNBUFFERED=1
+      - SECRET_KEY=${SECRET_KEY:-change-this-secret-key-in-production}
+      - CORS_ORIGINS=${CORS_ORIGINS:-*}
+    volumes:
+      # Uncomment the line below for development (hot reload)
+      # - ../../api:/app
+      - api-data:/app/data
+    restart: unless-stopped
+    networks:
+      - job-match-network
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:5000/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 40s
+    env_file:
+      - .env
+
+volumes:
+  api-data:
+    driver: local
+
+networks:
+  job-match-network:
+    driver: bridge
