@@ -2,6 +2,8 @@
 ## Job Match
 
 [![Twitter: @_brau_io](https://img.shields.io/badge/contact-@_brau_io-blue.svg?style=flat)](https://x.com/_brau_io)
+[![Python](https://img.shields.io/badge/python-3670A0?style=for-the-badge&logo=python&logoColor=ffdd54)](https://www.python.org/)
+[![SQLite](https://img.shields.io/badge/sqlite-%2307405e.svg?style=for-the-badge&logo=sqlite&logoColor=white)](https://sqlite.org/)
 
 Serviço de avaliação de currículos para avaliar o grau de aderência do currículo com a vaga.
 
@@ -24,7 +26,12 @@ desktop/
     ├── app.py             # Classe principal da aplicação
     ├── ui/                # Componentes de interface
     │   ├── __init__.py
-    │   └── main_window.py # Janela principal
+    │   ├── main_window.py        # Janela principal
+    │   ├── new_project_dialog.py # Diálogo de cadastro de projeto
+    │   └── about_dialog.py       # Diálogo sobre a aplicação
+    ├── database/          # Gerenciamento de banco de dados
+    │   ├── __init__.py
+    │   └── db.py          # Classe de gerenciamento do banco SQLite
     ├── utils/             # Funções utilitárias
     │   ├── __init__.py
     │   └── helpers.py
@@ -37,6 +44,7 @@ desktop/
 
 - Python 3.8 ou superior
 - Tkinter (incluído com Python)
+- SQLite
 
 ## Instalação
 
