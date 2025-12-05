@@ -9,3 +9,4 @@
 - Criado a estrutura básica do backend do projeto
 - Criado a tela de configuração para definir o servidor
 - Adicionado o container docker para integração contínua
+- Criado documentação do projeto com swagger

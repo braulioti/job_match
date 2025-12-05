@@ -122,7 +122,7 @@ class MainWindow:
             # Fallback to text if logo file doesn't exist
             header_label = tk.Label(
                 header_frame,
-                text="Job Match - Avaliação de Currículos",
+            text="Job Match - Avaliação de Currículos",
                 font=('Segoe UI', 16, 'bold'),
                 anchor=tk.CENTER,
                 bg='#f0f0f0'
