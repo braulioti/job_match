@@ -6,7 +6,7 @@ Dialog for selecting and opening an existing project
 import tkinter as tk
 from tkinter import ttk, messagebox
 from src.utils.helpers import center_window
-from src.database.db import Database
+from src.entities.project import Project
 
 
 class OpenProjectDialog:
@@ -31,19 +31,14 @@ class OpenProjectDialog:
     def _load_projects(self):
         """Load projects from database in alphabetical order"""
         try:
-            db = Database()
-            conn = db.connect()
-            cursor = conn.cursor()
-            cursor.execute("SELECT id, name, description FROM project ORDER BY name ASC")
-            rows = cursor.fetchall()
-            db.close()
+            projects = Project.get_all(order_by="name ASC")
             
             self.projects = []
-            for row in rows:
+            for project in projects:
                 self.projects.append({
-                    'id': row['id'],
-                    'name': row['name'],
-                    'description': row['description'] if row['description'] else ''
+                    'id': project.id,
+                    'name': project.name,
+                    'description': project.description if project.description else ''
                 })
             
             return True
@@ -156,3 +151,4 @@ class OpenProjectDialog:
         # Center the window after widgets are created
         self.dialog.update_idletasks()
         center_window(self.dialog, 500, 400)
+
