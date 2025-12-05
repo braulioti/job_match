@@ -5,6 +5,7 @@ Application Settings
 import os
 import sys
 from pathlib import Path
+import configparser
 
 
 class Settings:
@@ -53,8 +54,54 @@ class Settings:
     WINDOW_MIN_HEIGHT = 400
     
     @classmethod
+    def get_config_path(cls):
+        """Get the full path to the config.ini file"""
+        return cls.BASE_DIR / "config.ini"
+    
+    @classmethod
+    def get_servers_path(cls):
+        """Get the full path to the servers file"""
+        return cls.BASE_DIR / "servers"
+    
+    @classmethod
     def initialize_directories(cls):
         """Initialize required directories"""
         cls.DATA_DIR.mkdir(exist_ok=True)
         cls.LOGS_DIR.mkdir(exist_ok=True)
+    
+    @classmethod
+    def initialize_config_file(cls):
+        """Initialize config.ini file if it doesn't exist"""
+        config_path = cls.get_config_path()
+        
+        if not config_path.exists():
+            config = configparser.ConfigParser()
+            
+            # Application section
+            config['Application'] = {
+                'name': cls.APP_NAME,
+                'version': cls.APP_VERSION
+            }
+            
+            # Database section
+            config['Database'] = {
+                'name': cls.DB_NAME,
+                'path': str(cls.get_db_path())
+            }
+            
+            # Window section
+            config['Window'] = {
+                'width': str(cls.WINDOW_WIDTH),
+                'height': str(cls.WINDOW_HEIGHT),
+                'min_width': str(cls.WINDOW_MIN_WIDTH),
+                'min_height': str(cls.WINDOW_MIN_HEIGHT)
+            }
+            
+            # Write config file
+            try:
+                with open(config_path, 'w', encoding='utf-8') as configfile:
+                    config.write(configfile)
+                print(f"Arquivo de configuração criado: {config_path}")
+            except Exception as e:
+                print(f"Erro ao criar arquivo de configuração: {e}")
 

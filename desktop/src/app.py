@@ -9,6 +9,8 @@ from src.ui.main_window import MainWindow
 from src.utils.helpers import center_window
 from src.config.settings import Settings
 from src.database.db import initialize_database
+from src.manager.config_manager import ConfigManager
+from src.manager.server_manager import ServerManager
 
 
 class JobMatchApp:
@@ -16,6 +18,10 @@ class JobMatchApp:
     
     def __init__(self):
         """Initialize the application"""
+        # Initialize config file
+        self._initialize_config()
+        # Initialize servers
+        self._initialize_servers()
         # Initialize database
         self._initialize_database()
         
@@ -30,11 +36,40 @@ class JobMatchApp:
         self._configure_style()
         
         # Create main window
-        self.main_window = MainWindow(self.root)
+        self.main_window = MainWindow(
+            self.root,
+            server_manager=self.server_manager,
+            config_manager=self.config_manager,
+            selected_server=self.selected_server,
+            on_server_changed=self._on_server_changed
+        )
         
         # Center the window after widgets are created
         self.root.update_idletasks()
         center_window(self.root, Settings.WINDOW_WIDTH, Settings.WINDOW_HEIGHT)
+    
+    def _initialize_config(self):
+        """Initialize config.ini file"""
+        self.config_manager = ConfigManager()
+    
+    def _initialize_servers(self):
+        """Initialize servers from servers file"""
+        self.server_manager = ServerManager()
+        
+        server_url = self.config_manager.get('Server', 'url', fallback='')
+        
+        selected_server = None
+        if server_url:
+            selected_server = self.server_manager.get_server_by_url(server_url)
+        
+        if not selected_server:
+            selected_server = self.server_manager.get_default_server()
+            # Save the default server URL to config.ini if server was found
+            if selected_server:
+                self.config_manager.set('Server', 'url', selected_server['url'])
+                self.config_manager.save()
+        
+        self.selected_server = selected_server
     
     def _initialize_database(self):
         """Initialize the SQLite database"""
@@ -62,6 +97,18 @@ class JobMatchApp:
         style.configure('TFrame', background='#f0f0f0')
         style.configure('TLabel', background='#f0f0f0', font=('Segoe UI', 10))
         style.configure('TButton', font=('Segoe UI', 10))
+    
+    def _on_server_changed(self, new_server):
+        """
+        Handle server change from configuration dialog
+        
+        Args:
+            new_server: New ServerInterface selected
+        """
+        self.selected_server = new_server
+        # Update main window's selected_server reference
+        if self.main_window:
+            self.main_window.selected_server = new_server
     
     def run(self):
         """Start the application main loop"""
