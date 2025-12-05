@@ -5,6 +5,7 @@
 [![Twitter: @_brau_io](https://img.shields.io/badge/contact-@_brau_io-blue.svg?style=flat)](https://x.com/_brau_io)
 [![Python](https://img.shields.io/badge/python-3670A0?style=for-the-badge&logo=python&logoColor=ffdd54)](https://www.python.org/)
 [![SQLite](https://img.shields.io/badge/sqlite-%2307405e.svg?style=for-the-badge&logo=sqlite&logoColor=white)](https://sqlite.org/)
+[![Flask](https://img.shields.io/badge/flask-%23000.svg?style=for-the-badge&logo=flask&logoColor=white)](https://flask.palletsprojects.com/en/stable/)
 
 Serviço de avaliação de currículos para avaliar o grau de aderência do currículo com a vaga.
 
@@ -15,13 +16,20 @@ Novas atualizações do projeto podem ser acompanhadas através do X:
 ## Índice
 
 - [Estrutura do Projeto](#estrutura-do-projeto)
+  - [Aplicação Desktop](#aplicação-desktop)
+  - [Projeto Backend API](#projeto-backend-api)
 - [Requisitos](#requisitos)
 - [Instalação](#instalação)
 - [Build da Versão Desktop](#build-da-versão-desktop)
+- [Projeto Backend API](#projeto-backend-api-1)
+  - [Health Check Endpoint](#health-check-endpoint)
+  - [API v1](#api-v1)
 - [Versionamento](#versionamento)
 - [Autor](#autor)
 
 ## Estrutura do Projeto
+
+### Aplicação Desktop
 
 ```
 desktop/
@@ -56,11 +64,33 @@ desktop/
         └── settings.py
 ```
 
+### Projeto Backend API
+
+```
+API/
+├── app.py              # Aplicação principal Flask
+├── requirements.txt    # Dependências do projeto
+├── README.md          # Documentação da API
+├── config/            # Configurações
+│   ├── __init__.py
+│   └── settings.py
+├── routes/           # Rotas da API
+│   ├── __init__.py
+│   └── routes.py
+├── models/           # Modelos de dados
+│   ├── __init__.py
+│   └── models.py
+└── utils/            # Funções utilitárias
+    ├── __init__.py
+    └── helpers.py
+```
+
 ## Requisitos
 
 - Python 3.8 ou superior
 - Tkinter (incluído com Python)
-- SQLite
+- SQLite (Aplicação Desktop)
+- Flask 3.0.0 ou superior
 
 ## Instalação
 
@@ -97,6 +127,15 @@ O executável será criado em: `desktop/dist/JobMatch.exe`
 <div style="border-left: 4px solid #f44336; padding: 12px; margin: 16px 0;">
 <strong style="color: #c62828;">⚠️ IMPORTANTE:</strong> Para que a aplicação funcione corretamente, as pastas <code>images</code> e <code>scripts</code> devem ser distribuídas junto com o executável. Certifique-se de copiar as pastas <code>images</code> e <code>scripts</code> para o mesmo diretório onde está o <code>JobMatch.exe</code>.
 </div>
+
+## Projeto Backend API
+
+### Health Check Endpoint
+- **GET** `/health`
+    - Retorna o status da API
+
+### API v1
+- Todos os endpoints da API estão disponíveis em `/api/v1`
 
 ## Versionamento
 
