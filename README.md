@@ -9,6 +9,46 @@ Job Match é criado e mantido por [Bráulio Figueiredo](http://braulioti.com.br)
 Novas atualizações do projeto podem ser acompanhadas através do X:
 [@_brau_io](https://x.com/_brau_io).
 
+## Estrutura do Projeto
+
+```
+desktop/
+├── main.py                 # Ponto de entrada da aplicação
+├── requirements.txt        # Dependências do projeto
+├── build.spec             # Configuração do PyInstaller para compilação
+├── build.bat              # Script de build para Windows (batch)
+├── build.py               # Script de build para Windows (Python)
+├── README.md              # Documentação da aplicação desktop
+└── src/                   # Código fonte
+    ├── __init__.py
+    ├── app.py             # Classe principal da aplicação
+    ├── ui/                # Componentes de interface
+    │   ├── __init__.py
+    │   └── main_window.py # Janela principal
+    ├── utils/             # Funções utilitárias
+    │   ├── __init__.py
+    │   └── helpers.py
+    └── config/            # Configurações
+        ├── __init__.py
+        └── settings.py
+```
+
+## Requisitos
+
+- Python 3.8 ou superior
+- Tkinter (incluído com Python)
+
+## Instalação
+
+1. Ative o ambiente virtual (se estiver usando):
+```bash
+# Windows PowerShell
+.\venv\Scripts\Activate.ps1
+
+# Windows CMD
+.\venv\Scripts\activate.bat
+```
+
 ## Versionamento
 
 Job Match utiliza as diretrizes do "Semantic Versioning" sempre que possível.
