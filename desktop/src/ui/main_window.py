@@ -4,8 +4,8 @@ Main Window UI Component
 
 import tkinter as tk
 from tkinter import ttk
-from src.config.settings import Settings
-from src.utils.helpers import center_window
+from src.ui.new_project_dialog import NewProjectDialog
+from src.ui.about_dialog import AboutDialog
 
 
 class MainWindow:
@@ -14,6 +14,7 @@ class MainWindow:
     def __init__(self, parent):
         """Initialize the main window"""
         self.parent = parent
+        self.selected_project_id = None  # Global variable to store selected project ID
         self._create_menu()
         self._create_widgets()
     
@@ -25,6 +26,8 @@ class MainWindow:
         # Arquivo menu
         arquivo_menu = tk.Menu(menubar, tearoff=0)
         menubar.add_cascade(label="Projeto", menu=arquivo_menu)
+        arquivo_menu.add_command(label="Cadastrar Novo Projeto...", command=self._show_new_project_dialog, accelerator="Ctrl+N")
+        arquivo_menu.add_separator()
         arquivo_menu.add_command(label="Sair", command=self._on_exit, accelerator="Ctrl+Q")
         
         # Ajuda menu
@@ -32,95 +35,29 @@ class MainWindow:
         menubar.add_cascade(label="Ajuda", menu=ajuda_menu)
         ajuda_menu.add_command(label="Sobre", command=self._show_about)
         
-        # Bind keyboard shortcut
+        # Bind keyboard shortcuts
         self.parent.bind('<Control-q>', lambda e: self._on_exit())
+        self.parent.bind('<Control-n>', lambda e: self._show_new_project_dialog())
     
     def _on_exit(self):
         """Handle exit menu item"""
         self.parent.quit()
     
+    def _show_new_project_dialog(self):
+        """Show dialog to create a new project"""
+        def on_project_created(project_id, name, description):
+            """Callback when project is created"""
+            # Store project ID globally
+            self.selected_project_id = project_id
+            
+            # Update UI with project information
+            self._update_selected_project(name, description)
+        
+        NewProjectDialog(self.parent, on_project_created)
+    
     def _show_about(self):
         """Show about dialog"""
-        about_window = tk.Toplevel(self.parent)
-        about_window.title("Sobre")
-        about_window.geometry("400x300")
-        about_window.resizable(False, False)
-        
-        # Make window modal
-        about_window.transient(self.parent)
-        about_window.grab_set()
-        about_window.focus_set()
-        
-        # Main frame
-        main_frame = ttk.Frame(about_window, padding="20")
-        main_frame.pack(fill=tk.BOTH, expand=True)
-        
-        # App name
-        app_name_label = ttk.Label(
-            main_frame,
-            text=Settings.APP_NAME,
-            font=('Segoe UI', 18, 'bold')
-        )
-        app_name_label.pack(pady=(0, 10))
-        
-        # Version
-        version_label = ttk.Label(
-            main_frame,
-            text=f"Versão {Settings.APP_VERSION}",
-            font=('Segoe UI', 10)
-        )
-        version_label.pack(pady=(0, 20))
-        
-        # Description
-        description_text = (
-            "Serviço de avaliação de currículos para avaliar o grau de "
-            "aderência do currículo com a vaga."
-        )
-        description_label = ttk.Label(
-            main_frame,
-            text=description_text,
-            font=('Segoe UI', 10),
-            wraplength=350,
-            justify=tk.CENTER
-        )
-        description_label.pack(pady=(0, 20))
-        
-        # Author
-        author_label = ttk.Label(
-            main_frame,
-            text="Criado e mantido por Bráulio Figueiredo",
-            font=('Segoe UI', 9)
-        )
-        author_label.pack(pady=(0, 10))
-        
-        # Website
-        website_label = ttk.Label(
-            main_frame,
-            text="https://brau.io",
-            font=('Segoe UI', 9),
-            foreground='blue',
-            cursor='hand2'
-        )
-        website_label.pack(pady=(0, 20))
-        
-        # Close button
-        button_frame = ttk.Frame(main_frame)
-        button_frame.pack()
-        
-        close_button = ttk.Button(
-            button_frame,
-            text="Fechar",
-            command=about_window.destroy
-        )
-        close_button.pack()
-        
-        # Bind Enter key to close
-        about_window.bind('<Return>', lambda e: about_window.destroy())
-        about_window.bind('<Escape>', lambda e: about_window.destroy())
-        
-        # Center the window after widgets are created
-        about_window.update_idletasks()
-        center_window(about_window, 400, 300)
+        AboutDialog(self.parent)
     
     def _create_widgets(self):
         """Create and layout all widgets"""
@@ -132,24 +69,61 @@ class MainWindow:
         self.parent.columnconfigure(0, weight=1)
         self.parent.rowconfigure(0, weight=1)
         main_frame.columnconfigure(0, weight=1)
-        main_frame.rowconfigure(1, weight=1)
+        main_frame.rowconfigure(2, weight=1)
         
         # Header
-        header_label = ttk.Label(
+        header_label = tk.Label(
             main_frame,
             text="Job Match - Avaliação de Currículos",
-            font=('Segoe UI', 16, 'bold')
+            font=('Segoe UI', 16, 'bold'),
+            anchor=tk.CENTER
         )
-        header_label.grid(row=0, column=0, pady=(0, 20))
+        header_label.grid(row=0, column=0, sticky=(tk.W, tk.E), pady=(0, 20))
+        
+        # Selected project info frame
+        project_info_frame = ttk.Frame(main_frame)
+        project_info_frame.grid(row=1, column=0, sticky=(tk.W, tk.E), pady=(0, 20))
+        project_info_frame.columnconfigure(1, weight=1)
+        
+        # Project name label
+        self.project_name_label = ttk.Label(
+            project_info_frame,
+            text="Projeto Selecionado: ",
+            font=('Segoe UI', 10, 'bold')
+        )
+        self.project_name_label.grid(row=0, column=0, sticky=tk.W)
+        
+        self.project_name_value = ttk.Label(
+            project_info_frame,
+            text="",
+            font=('Segoe UI', 10)
+        )
+        self.project_name_value.grid(row=0, column=1, sticky=tk.W, padx=(5, 0))
+        
+        # Project description label
+        self.project_desc_label = ttk.Label(
+            project_info_frame,
+            text="Descrição: ",
+            font=('Segoe UI', 10, 'bold')
+        )
+        self.project_desc_label.grid(row=1, column=0, sticky=tk.W, pady=(5, 0))
+        
+        self.project_desc_value = ttk.Label(
+            project_info_frame,
+            text="",
+            font=('Segoe UI', 10),
+            wraplength=600
+        )
+        self.project_desc_value.grid(row=1, column=1, sticky=tk.W, padx=(5, 0), pady=(5, 0))
         
         # Content area
         content_frame = ttk.Frame(main_frame)
-        content_frame.grid(row=1, column=0, sticky=(tk.W, tk.E, tk.N, tk.S))
+        content_frame.grid(row=2, column=0, sticky=(tk.W, tk.E, tk.N, tk.S))
         content_frame.columnconfigure(0, weight=1)
 
         # Status bar
         status_frame = ttk.Frame(main_frame)
-        status_frame.grid(row=2, column=0, sticky=(tk.W, tk.E), pady=(10, 0))
+        status_frame.grid(row=3, column=0, sticky=(tk.W, tk.E), pady=(10, 0))
         
         self.status_label = ttk.Label(
             status_frame,
@@ -161,4 +135,9 @@ class MainWindow:
     def update_status(self, message):
         """Update the status bar message"""
         self.status_label.config(text=message)
+    
+    def _update_selected_project(self, name, description):
+        """Update the selected project information display"""
+        self.project_name_value.config(text=name)
+        self.project_desc_value.config(text=description if description else "")
 
