@@ -5,6 +5,7 @@ Dialog showing application information
 
 import tkinter as tk
 from tkinter import ttk
+from PIL import Image, ImageTk
 from src.config.settings import Settings
 from src.utils.helpers import center_window
 
@@ -27,7 +28,7 @@ class AboutDialog:
         """Create and show the dialog"""
         self.about_window = tk.Toplevel(self.parent)
         self.about_window.title("Sobre")
-        self.about_window.geometry("400x300")
+        self.about_window.geometry("400x400")
         self.about_window.resizable(False, False)
         
         # Make window modal
@@ -39,13 +40,39 @@ class AboutDialog:
         main_frame = ttk.Frame(self.about_window, padding="20")
         main_frame.pack(fill=tk.BOTH, expand=True)
         
-        # App name
-        app_name_label = ttk.Label(
-            main_frame,
-            text=Settings.APP_NAME,
-            font=('Segoe UI', 18, 'bold')
-        )
-        app_name_label.pack(pady=(0, 10))
+        # App logo
+        logo_path = Settings.get_logo_path()
+        if logo_path.exists():
+            try:
+                # Load and resize logo
+                img = Image.open(str(logo_path))
+                # Resize to fit dialog (max width 200px, maintain aspect ratio)
+                img.thumbnail((200, 200), Image.Resampling.LANCZOS)
+                self.logo_photo = ImageTk.PhotoImage(img)
+                
+                logo_label = tk.Label(
+                    main_frame,
+                    image=self.logo_photo,
+                    bg='#f0f0f0'
+                )
+                logo_label.pack(pady=(0, 10))
+            except Exception as e:
+                # Fallback to text if image fails to load
+                app_name_label = ttk.Label(
+                    main_frame,
+                    text=Settings.APP_NAME,
+                    font=('Segoe UI', 18, 'bold')
+                )
+                app_name_label.pack(pady=(0, 10))
+                print(f"Erro ao carregar logo: {e}")
+        else:
+            # Fallback to text if logo file doesn't exist
+            app_name_label = ttk.Label(
+                main_frame,
+                text=Settings.APP_NAME,
+                font=('Segoe UI', 18, 'bold')
+            )
+            app_name_label.pack(pady=(0, 10))
         
         # Version
         version_label = ttk.Label(
@@ -104,4 +131,4 @@ class AboutDialog:
         
         # Center the window after widgets are created
         self.about_window.update_idletasks()
-        center_window(self.about_window, 400, 300)
+        center_window(self.about_window, 400, 400)

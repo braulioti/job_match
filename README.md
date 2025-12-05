@@ -1,5 +1,6 @@
-# [Job Match v0.1.0](https://brau.io)
-## Job Match
+# <div align="center"><a href="https://brau.io"><img src="docs/images/job_match_logo.png" alt="Job Match" width="50%"></a></div>
+
+## Job Match v0.1.0
 
 [![Twitter: @_brau_io](https://img.shields.io/badge/contact-@_brau_io-blue.svg?style=flat)](https://x.com/_brau_io)
 [![Python](https://img.shields.io/badge/python-3670A0?style=for-the-badge&logo=python&logoColor=ffdd54)](https://www.python.org/)
@@ -21,6 +22,10 @@ desktop/
 ├── build.bat              # Script de build para Windows (batch)
 ├── build.py               # Script de build para Windows (Python)
 ├── README.md              # Documentação da aplicação desktop
+├── images/                # Imagens e ícones da aplicação
+│   ├── favicon.ico        # Ícone da aplicação
+│   ├── favicon.png        # Favicon em formato PNG
+│   └── job_match_logo.png # Logo do Job Match
 └── src/                   # Código fonte
     ├── __init__.py
     ├── app.py             # Classe principal da aplicação
@@ -56,6 +61,31 @@ desktop/
 # Windows CMD
 .\venv\Scripts\activate.bat
 ```
+
+2. Instale as dependências:
+```bash
+pip install -r requirements.txt
+```
+
+## Build da Versão Desktop
+
+Para compilar a aplicação em um executável standalone, execute o script de build:
+
+```bash
+cd desktop
+python build.py
+```
+
+O script irá:
+- Limpar builds anteriores (pasta `build` e `dist`)
+- Compilar a aplicação usando PyInstaller
+- Gerar o executável `JobMatch.exe` na pasta `dist`
+
+O executável será criado em: `desktop/dist/JobMatch.exe`
+
+<div style="border-left: 4px solid #f44336; padding: 12px; margin: 16px 0;">
+<strong style="color: #c62828;">⚠️ IMPORTANTE:</strong> Para que a aplicação funcione corretamente, a pasta <code>images</code> deve ser distribuída junto com o executável. Certifique-se de copiar a pasta <code>images</code> para o mesmo diretório onde está o <code>JobMatch.exe</code>.
+</div>
 
 ## Versionamento
 

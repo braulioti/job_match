@@ -23,6 +23,9 @@ class JobMatchApp:
         self.root.title("Job Match")
         self.root.geometry(f"{Settings.WINDOW_WIDTH}x{Settings.WINDOW_HEIGHT}")
         
+        # Set window icon
+        self._set_window_icon()
+        
         # Configure style
         self._configure_style()
         
@@ -40,6 +43,15 @@ class JobMatchApp:
             print(f"Banco de dados inicializado: {Settings.get_db_path()}")
         else:
             print(f"Erro ao inicializar banco de dados: {Settings.get_db_path()}")
+    
+    def _set_window_icon(self):
+        """Set the window icon"""
+        try:
+            favicon_path = Settings.get_favicon_path()
+            if favicon_path.exists():
+                self.root.iconbitmap(str(favicon_path))
+        except Exception as e:
+            print(f"Erro ao definir ícone da janela: {e}")
     
     def _configure_style(self):
         """Configure application style"""

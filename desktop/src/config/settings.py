@@ -35,6 +35,17 @@ class Settings:
         """Get the full path to the database file"""
         return cls.BASE_DIR / f"{cls.DB_NAME}"
     
+    # Images path
+    @classmethod
+    def get_favicon_path(cls):
+        """Get the full path to the favicon file"""
+        return cls.BASE_DIR / "images" / "favicon.ico"
+    
+    @classmethod
+    def get_logo_path(cls):
+        """Get the full path to the logo file"""
+        return cls.BASE_DIR / "images" / "job_match_logo.png"
+    
     # Window settings
     WINDOW_WIDTH = 800
     WINDOW_HEIGHT = 600
