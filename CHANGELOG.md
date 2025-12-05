@@ -6,3 +6,5 @@
 - Criado tela para criar novo projeto
 - Definido as imagens do projeto
 - Refatorado a forma de criação de tabelas no banco dados utilizando scripts
+- Criado a estrutura básica do backend do projeto
+- Criado a tela de configuração para definir o servidor

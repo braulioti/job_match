@@ -7,39 +7,44 @@ from tkinter import ttk
 from PIL import Image, ImageTk
 from src.ui.new_project_dialog import NewProjectDialog
 from src.ui.about_dialog import AboutDialog
+from src.ui.configuration_dialog import ConfigurationDialog
+from src.ui.builders.main_menu import MainMenuBuilder
 from src.config.settings import Settings
 
 
 class MainWindow:
     """Main window of the application"""
     
-    def __init__(self, parent):
-        """Initialize the main window"""
+    def __init__(self, parent, server_manager=None, config_manager=None, selected_server=None, on_server_changed=None):
+        """
+        Initialize the main window
+        
+        Args:
+            parent: Parent window
+            server_manager: ServerManager instance
+            config_manager: ConfigManager instance
+            selected_server: Currently selected server
+            on_server_changed: Callback function when server is changed
+        """
         self.parent = parent
         self.selected_project_id = None  # Global variable to store selected project ID
+        self.server_manager = server_manager
+        self.config_manager = config_manager
+        self.selected_server = selected_server
+        self.on_server_changed = on_server_changed
         self._create_menu()
         self._create_widgets()
     
     def _create_menu(self):
-        """Create the menu bar"""
-        menubar = tk.Menu(self.parent)
-        self.parent.config(menu=menubar)
-        
-        # Arquivo menu
-        arquivo_menu = tk.Menu(menubar, tearoff=0)
-        menubar.add_cascade(label="Projeto", menu=arquivo_menu)
-        arquivo_menu.add_command(label="Cadastrar Novo Projeto...", command=self._show_new_project_dialog, accelerator="Ctrl+N")
-        arquivo_menu.add_separator()
-        arquivo_menu.add_command(label="Sair", command=self._on_exit, accelerator="Ctrl+Q")
-        
-        # Ajuda menu
-        ajuda_menu = tk.Menu(menubar, tearoff=0)
-        menubar.add_cascade(label="Ajuda", menu=ajuda_menu)
-        ajuda_menu.add_command(label="Sobre", command=self._show_about)
-        
-        # Bind keyboard shortcuts
-        self.parent.bind('<Control-q>', lambda e: self._on_exit())
-        self.parent.bind('<Control-n>', lambda e: self._show_new_project_dialog())
+        """Create the menu bar using MainMenuBuilder"""
+        menu_builder = MainMenuBuilder(
+            parent=self.parent,
+            on_new_project=self._show_new_project_dialog,
+            on_exit=self._on_exit,
+            on_about=self._show_about,
+            on_settings=self._show_configuration_dialog
+        )
+        menu_builder.build()
     
     def _on_exit(self):
         """Handle exit menu item"""
@@ -60,6 +65,16 @@ class MainWindow:
     def _show_about(self):
         """Show about dialog"""
         AboutDialog(self.parent)
+    
+    def _show_configuration_dialog(self):
+        """Show configuration dialog"""
+        ConfigurationDialog(
+            self.parent,
+            self.server_manager,
+            self.config_manager,
+            self.selected_server,
+            self.on_server_changed
+        )
     
     def _create_widgets(self):
         """Create and layout all widgets"""

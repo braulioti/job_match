@@ -43,5 +43,6 @@ logs/
 *.spec~
 *.pyc
 
-# Banco de Dados temporário
-projects.job.match
+# Arquivos temporários do projeto
+desktop/projects.job.match
+desktop/config.ini

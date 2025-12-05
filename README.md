@@ -36,9 +36,8 @@ desktop/
 ├── main.py                 # Ponto de entrada da aplicação
 ├── requirements.txt        # Dependências do projeto
 ├── build.spec             # Configuração do PyInstaller para compilação
-├── build.bat              # Script de build para Windows (batch)
 ├── build.py               # Script de build para Windows (Python)
-├── README.md              # Documentação da aplicação desktop
+├── servers                 # Arquivo com lista de servidores disponíveis
 ├── images/                # Imagens e ícones da aplicação
 │   ├── favicon.ico        # Ícone da aplicação
 │   ├── favicon.png        # Favicon em formato PNG
@@ -52,10 +51,25 @@ desktop/
     │   ├── __init__.py
     │   ├── main_window.py        # Janela principal
     │   ├── new_project_dialog.py # Diálogo de cadastro de projeto
-    │   └── about_dialog.py       # Diálogo sobre a aplicação
+    │   ├── about_dialog.py       # Diálogo sobre a aplicação
+    │   ├── configuration_dialog.py # Diálogo de configurações
+    │   └── builders/      # Builders de componentes UI
+    │       ├── __init__.py
+    │       └── main_menu.py       # Builder do menu principal
     ├── database/          # Gerenciamento de banco de dados
     │   ├── __init__.py
     │   └── db.py          # Classe de gerenciamento do banco SQLite
+    ├── manager/           # Gerenciadores de configuração e recursos
+    │   ├── __init__.py
+    │   ├── base_manager.py        # Classe base para managers
+    │   ├── config_manager.py      # Gerenciador de configurações (config.ini)
+    │   └── server_manager.py      # Gerenciador de servidores
+    ├── interfaces/        # Interfaces e tipos de dados
+    │   ├── __init__.py
+    │   └── server.py      # Interface para estrutura de servidor
+    ├── integration/       # Integrações com serviços externos
+    │   ├── __init__.py
+    │   └── server_integration.py  # Integração com servidores
     ├── utils/             # Funções utilitárias
     │   ├── __init__.py
     │   └── helpers.py
@@ -108,7 +122,9 @@ API/
 pip install -r requirements.txt
 ```
 
-## Build da Versão Desktop
+## Versão Desktop
+
+### Build da versão
 
 Para compilar a aplicação em um executável standalone, execute o script de build:
 
@@ -124,9 +140,26 @@ O script irá:
 
 O executável será criado em: `desktop/dist/JobMatch.exe`
 
+### Arquivos e pastas que precisam ser distribuídos
+
 <div style="border-left: 4px solid #f44336; padding: 12px; margin: 16px 0;">
-<strong style="color: #c62828;">⚠️ IMPORTANTE:</strong> Para que a aplicação funcione corretamente, as pastas <code>images</code> e <code>scripts</code> devem ser distribuídas junto com o executável. Certifique-se de copiar as pastas <code>images</code> e <code>scripts</code> para o mesmo diretório onde está o <code>JobMatch.exe</code>.
+<strong style="color: #c62828;">⚠️ IMPORTANTE:</strong> Para que a aplicação funcione corretamente, alguns arquivos e pastas deverão ser distribuídos junto com o arquivo <code>JobMatch.exe</code>
 </div>
+
+É necessário copiar os seguintes arquivos/pastas para a pasta dist antes de iniciar o projeto
+- images
+- scripts
+- servers
+
+### Configurações do arquivo servers
+
+Quando a aplicação for iniciada, o arquivo servers é carregado com a lista de servidores do projeto. Em tempo de desenvolvimento, você pode ajustar o arquivo da seguinte forma:
+ ```
+ Servidor Oficial do Projeto;https://job-match-api.brau.io
+ Servidor Local;http://localhost:5000;default
+ ```
+Desta forma você terá dois servidores disponíveis para poder utilizar, o oficial do projeto e o seu localhost.
+Caso queira subir a aplicação em um servidor dentro da sua empresa, basta adicionar outras linhas no arquivo servers
 
 ## Projeto Backend API
 
