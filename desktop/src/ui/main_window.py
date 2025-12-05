@@ -7,10 +7,12 @@ from tkinter import ttk
 from PIL import Image, ImageTk
 from src.ui.new_project_dialog import NewProjectDialog
 from src.ui.open_project_dialog import OpenProjectDialog
+from src.ui.new_vacancy_dialog import NewVacancyDialog
 from src.ui.about_dialog import AboutDialog
 from src.ui.configuration_dialog import ConfigurationDialog
 from src.ui.builders.main_menu import MainMenuBuilder
 from src.config.settings import Settings
+from src.entities.job_vacancy import JobVacancy
 
 
 class MainWindow:
@@ -152,20 +154,20 @@ class MainWindow:
         subtitle_label.grid(row=1, column=0, pady=(0, 0))
         
         # Selected project info frame
-        project_info_frame = ttk.Frame(main_frame)
-        project_info_frame.grid(row=1, column=0, sticky=(tk.W, tk.E), pady=(0, 20))
-        project_info_frame.columnconfigure(1, weight=1)
+        self.project_info_frame = ttk.Frame(main_frame)
+        self.project_info_frame.grid(row=1, column=0, sticky=(tk.W, tk.E), pady=(0, 20))
+        self.project_info_frame.columnconfigure(1, weight=1)
         
         # Project name label
         self.project_name_label = ttk.Label(
-            project_info_frame,
+            self.project_info_frame,
             text="Projeto Selecionado: ",
             font=('Segoe UI', 10, 'bold')
         )
         self.project_name_label.grid(row=0, column=0, sticky=tk.W)
         
         self.project_name_value = ttk.Label(
-            project_info_frame,
+            self.project_info_frame,
             text="",
             font=('Segoe UI', 10)
         )
@@ -173,27 +175,177 @@ class MainWindow:
         
         # Project description label
         self.project_desc_label = ttk.Label(
-            project_info_frame,
+            self.project_info_frame,
             text="Descrição: ",
             font=('Segoe UI', 10, 'bold')
         )
         self.project_desc_label.grid(row=1, column=0, sticky=(tk.W, tk.N), pady=(5, 0))
         
         self.project_desc_value = ttk.Label(
-            project_info_frame,
+            self.project_info_frame,
             text="",
             font=('Segoe UI', 10),
             wraplength=1  # Will be updated dynamically
         )
         self.project_desc_value.grid(row=1, column=1, sticky=(tk.W, tk.E), padx=(5, 0), pady=(5, 0))
         
+        # Initially hide project info frame (no project selected)
+        self.project_info_frame.grid_remove()
+        
         # Bind to window resize to update wraplength
         self.parent.bind('<Configure>', self._on_window_resize)
         
-        # Content area
-        content_frame = ttk.Frame(main_frame)
-        content_frame.grid(row=2, column=0, sticky=(tk.W, tk.E, tk.N, tk.S))
-        content_frame.columnconfigure(0, weight=1)
+        # Content area panel (below description)
+        self.content_panel = ttk.Frame(main_frame, relief=tk.SUNKEN, borderwidth=1)
+        self.content_panel.grid(row=2, column=0, sticky=(tk.W, tk.E, tk.N, tk.S), pady=(0, 0))
+        self.content_panel.columnconfigure(0, weight=1)
+        self.content_panel.rowconfigure(0, weight=1)
+        
+        # PanedWindow for splitter between left and right panels
+        self.paned_window = ttk.PanedWindow(self.content_panel, orient=tk.HORIZONTAL)
+        self.paned_window.grid(row=0, column=0, sticky=(tk.W, tk.E, tk.N, tk.S))
+        
+        # Bind to sash movement to update wraplength
+        def on_sash_moved(event):
+            """Handle splitter movement"""
+            self.parent.after(50, self._update_vacancy_cards_wraplength)
+        
+        self.paned_window.bind('<ButtonRelease-1>', on_sash_moved)
+        
+        # Left panel (15% of width)
+        self.left_panel = ttk.Frame(self.paned_window, relief=tk.SUNKEN, borderwidth=1)
+        self.paned_window.add(self.left_panel, weight=1)
+        
+        # Configure left panel grid
+        self.left_panel.columnconfigure(0, weight=1)
+        self.left_panel.rowconfigure(1, weight=1)
+        
+        # Toolbar in left panel
+        toolbar_frame = ttk.Frame(self.left_panel)
+        toolbar_frame.grid(row=0, column=0, sticky=(tk.W, tk.E), padx=5, pady=5)
+        toolbar_frame.columnconfigure(0, weight=1)
+        
+        # Add Vacancy button
+        add_vacancy_button = ttk.Button(
+            toolbar_frame,
+            text="Adicionar Vaga",
+            command=self._on_add_vacancy
+        )
+        add_vacancy_button.grid(row=0, column=0, sticky=(tk.W, tk.E), pady=(0, 5))
+        
+        # Scrollable panel below toolbar (100% of remaining area)
+        scrollable_frame = ttk.Frame(self.left_panel)
+        scrollable_frame.grid(row=1, column=0, sticky=(tk.W, tk.E, tk.N, tk.S), padx=5, pady=(0, 5))
+        scrollable_frame.columnconfigure(0, weight=1)
+        scrollable_frame.rowconfigure(0, weight=1)
+        
+        # Scrollbar
+        scrollbar = ttk.Scrollbar(scrollable_frame, orient=tk.VERTICAL)
+        scrollbar.grid(row=0, column=1, sticky=(tk.N, tk.S))
+        
+        # Canvas for scrolling
+        self.vacancies_canvas = tk.Canvas(
+            scrollable_frame,
+            yscrollcommand=scrollbar.set,
+            bg='#f0f0f0',
+            highlightthickness=0
+        )
+        self.vacancies_canvas.grid(row=0, column=0, sticky=(tk.W, tk.E, tk.N, tk.S))
+        scrollbar.config(command=self.vacancies_canvas.yview)
+        
+        # Inner frame for content
+        self.vacancies_content_frame = ttk.Frame(self.vacancies_canvas)
+        self.vacancies_content_frame.columnconfigure(0, weight=1)
+        self.vacancies_canvas_window = self.vacancies_canvas.create_window((0, 0), window=self.vacancies_content_frame, anchor=tk.NW)
+        
+        # Configure canvas scrolling
+        def configure_scroll_region(event=None):
+            self.vacancies_canvas.configure(scrollregion=self.vacancies_canvas.bbox("all"))
+        
+        def configure_canvas_width(event):
+            canvas_width = event.width
+            self.vacancies_canvas.itemconfig(self.vacancies_canvas_window, width=canvas_width)
+            # Update wraplength for existing vacancy cards
+            self._update_vacancy_cards_wraplength()
+        
+        self.vacancies_content_frame.bind('<Configure>', configure_scroll_region)
+        self.vacancies_canvas.bind('<Configure>', configure_canvas_width)
+        
+        # Mouse wheel scrolling
+        def on_mousewheel(event):
+            self.vacancies_canvas.yview_scroll(int(-1 * (event.delta / 120)), "units")
+        
+        self.vacancies_canvas.bind_all("<MouseWheel>", on_mousewheel)
+        
+        # Right panel (85% of width)
+        self.right_panel = ttk.Frame(self.paned_window, relief=tk.SUNKEN, borderwidth=1)
+        self.paned_window.add(self.right_panel, weight=5)
+        
+        # Configure right panel grid
+        self.right_panel.columnconfigure(0, weight=1)
+        self.right_panel.rowconfigure(0, weight=1)  # Scrollable area takes available space
+        # row 1 will be for progress bar (no weight, just takes needed space)
+        
+        # Scrollable panel (100% width and height, resizable with splitter)
+        right_scrollable_frame = ttk.Frame(self.right_panel)
+        right_scrollable_frame.grid(row=0, column=0, sticky=(tk.W, tk.E, tk.N, tk.S), padx=5, pady=(5, 0))
+        right_scrollable_frame.columnconfigure(0, weight=1)
+        right_scrollable_frame.rowconfigure(0, weight=1)
+        
+        # Scrollbar (vertical)
+        right_scrollbar = ttk.Scrollbar(right_scrollable_frame, orient=tk.VERTICAL)
+        right_scrollbar.grid(row=0, column=1, sticky=(tk.N, tk.S))
+        
+        # Canvas for scrolling
+        self.right_canvas = tk.Canvas(
+            right_scrollable_frame,
+            yscrollcommand=right_scrollbar.set,
+            bg='#f0f0f0',
+            highlightthickness=0
+        )
+        self.right_canvas.grid(row=0, column=0, sticky=(tk.W, tk.E, tk.N, tk.S))
+        right_scrollbar.config(command=self.right_canvas.yview)
+        
+        # Inner frame for content
+        self.right_content_frame = ttk.Frame(self.right_canvas)
+        self.right_canvas_window = self.right_canvas.create_window((0, 0), window=self.right_content_frame, anchor=tk.NW)
+        
+        # Configure canvas scrolling
+        def configure_right_scroll_region(event=None):
+            self.right_canvas.configure(scrollregion=self.right_canvas.bbox("all"))
+        
+        def configure_right_canvas_width(event):
+            canvas_width = event.width
+            self.right_canvas.itemconfig(self.right_canvas_window, width=canvas_width)
+        
+        self.right_content_frame.bind('<Configure>', configure_right_scroll_region)
+        self.right_canvas.bind('<Configure>', configure_right_canvas_width)
+        
+        # Mouse wheel scrolling for right panel
+        def on_right_mousewheel(event):
+            self.right_canvas.yview_scroll(int(-1 * (event.delta / 120)), "units")
+        
+        self.right_canvas.bind_all("<MouseWheel>", on_right_mousewheel)
+        
+        # Progress bar at the bottom, outside the scrollable area (100% width, resizable with splitter)
+        progress_frame = ttk.Frame(self.right_panel)
+        progress_frame.grid(row=1, column=0, sticky=(tk.W, tk.E), padx=5, pady=5)
+        progress_frame.columnconfigure(0, weight=1)
+        
+        self.progress_bar = ttk.Progressbar(
+            progress_frame,
+            mode='determinate',
+            maximum=100,
+            length=100  # Will be resized automatically
+        )
+        self.progress_bar.grid(row=0, column=0, sticky=(tk.W, tk.E))
+        
+        # Set initial sizes (15% and 85%)
+        # This will be set after the window is shown
+        self.parent.after(100, self._set_panel_sizes)
+        
+        # Initially hide content panel (no project selected)
+        self.content_panel.grid_remove()
 
         # Status bar
         status_frame = ttk.Frame(main_frame)
@@ -232,6 +384,19 @@ class MainWindow:
                 fg='#c62828'  # Red color
             )
     
+    def _set_panel_sizes(self):
+        """Set initial panel sizes (15% left, 85% right)"""
+        try:
+            if self.content_panel.winfo_viewable():
+                panel_width = self.content_panel.winfo_width()
+                if panel_width > 1:
+                    # Calculate 15% of panel width for left panel
+                    left_width = int(panel_width * 0.15)
+                    # PanedWindow uses sashpos to set the splitter position
+                    self.paned_window.sashpos(0, left_width)
+        except:
+            pass  # Ignore errors during initial sizing
+    
     def _on_window_resize(self, event=None):
         """Handle window resize to update wraplength"""
         if event and event.widget == self.parent:
@@ -243,11 +408,148 @@ class MainWindow:
                 available_width = window_width - 40 - 150 - 20  # Approximate
                 if available_width > 0:
                     self.project_desc_value.config(wraplength=available_width)
+                
+                # Update panel sizes if content panel is visible
+                if hasattr(self, 'content_panel') and self.content_panel.winfo_viewable():
+                    self.parent.after(50, self._set_panel_sizes)
+    
+    def _on_add_vacancy(self):
+        """Handle Add Vacancy button click"""
+        if not self.selected_project_id:
+            from tkinter import messagebox
+            messagebox.showwarning("Aviso", "Por favor, selecione um projeto primeiro.", parent=self.parent)
+            return
+        
+        def on_vacancy_created(vacancy_id, title, description, resume_folder):
+            """Callback when vacancy is created"""
+            # Reload vacancies list
+            self._load_vacancies()
+        
+        NewVacancyDialog(self.parent, self.selected_project_id, on_vacancy_created)
+    
+    def _update_vacancy_cards_wraplength(self):
+        """Update wraplength for all vacancy title labels"""
+        try:
+            # Wait a bit for the canvas to update its size
+            self.parent.after(10, self._do_update_wraplength)
+        except Exception as e:
+            print(f"Erro ao atualizar wraplength: {e}")
+    
+    def _do_update_wraplength(self):
+        """Actually update wraplength for all vacancy title labels"""
+        try:
+            canvas_width = self.vacancies_canvas.winfo_width()
+            if canvas_width > 1:
+                # Calculate available width: canvas width - padding - scrollbar width
+                scrollbar_width = 20  # Approximate scrollbar width
+                available_width = canvas_width - scrollbar_width - 20  # Account for padding
+                # Wraplength: available width - prefix label width - padding
+                # Prefix "Título da Vaga:" is approximately 120 pixels, plus padding
+                wraplength = max(50, available_width - 130)  # Minimum 50 pixels
+                
+                # Update wraplength for all title value labels
+                for card_frame in self.vacancies_content_frame.winfo_children():
+                    if isinstance(card_frame, ttk.Frame):
+                        for widget in card_frame.winfo_children():
+                            if isinstance(widget, ttk.Label):
+                                try:
+                                    font_tuple = widget.cget('font')
+                                    # Check if it's the title value label (not bold)
+                                    is_bold = False
+                                    if isinstance(font_tuple, tuple):
+                                        is_bold = len(font_tuple) > 2 and font_tuple[2] == 'bold'
+                                    elif isinstance(font_tuple, str):
+                                        is_bold = 'bold' in font_tuple.lower()
+                                    
+                                    if not is_bold:
+                                        widget.config(wraplength=wraplength)
+                                        # Force update to recalculate text wrapping
+                                        widget.update_idletasks()
+                                except Exception as e:
+                                    print(f"Erro ao atualizar label: {e}")
+                
+                # Update scroll region after wraplength changes
+                self.vacancies_content_frame.update_idletasks()
+                self.vacancies_canvas.configure(scrollregion=self.vacancies_canvas.bbox("all"))
+        except Exception as e:
+            print(f"Erro ao atualizar wraplength: {e}")
+    
+    def _load_vacancies(self):
+        """Load and display job vacancies for the selected project"""
+        # Clear existing cards
+        for widget in self.vacancies_content_frame.winfo_children():
+            widget.destroy()
+        
+        if not self.selected_project_id:
+            return
+        
+        try:
+            # Get all vacancies for the selected project
+            vacancies = JobVacancy.get_by_project_id(self.selected_project_id, order_by="title ASC")
+            
+            # Get canvas width for wraplength calculation
+            canvas_width = self.vacancies_canvas.winfo_width()
+            if canvas_width < 1:
+                # If canvas not yet rendered, use a default width
+                canvas_width = 200
+            
+            # Calculate available width for text (canvas width - padding - scrollbar)
+            available_width = canvas_width - 30  # Account for padding and scrollbar
+            wraplength = available_width - 120  # Account for prefix label and padding
+            
+            # Create cards for each vacancy
+            for idx, vacancy in enumerate(vacancies):
+                # Card frame
+                card_frame = ttk.Frame(
+                    self.vacancies_content_frame,
+                    relief=tk.RAISED,
+                    borderwidth=1
+                )
+                card_frame.grid(row=idx, column=0, sticky=(tk.W, tk.E), padx=5, pady=5)
+                card_frame.columnconfigure(1, weight=1)
+                
+                # "Título da Vaga:" label (bold)
+                title_prefix_label = ttk.Label(
+                    card_frame,
+                    text="Título da Vaga:",
+                    font=('Segoe UI', 9, 'bold'),
+                    anchor=tk.W
+                )
+                title_prefix_label.grid(row=0, column=0, sticky=tk.W, padx=(10, 5), pady=10)
+                
+                # Title value label (normal, with word wrap)
+                title_value_label = ttk.Label(
+                    card_frame,
+                    text=vacancy.title,
+                    font=('Segoe UI', 9),
+                    anchor=tk.W,
+                    wraplength=wraplength
+                )
+                title_value_label.grid(row=0, column=1, sticky=(tk.W, tk.E), padx=(0, 10), pady=10)
+            
+            # Update scroll region
+            self.vacancies_content_frame.update_idletasks()
+            self.vacancies_canvas.configure(scrollregion=self.vacancies_canvas.bbox("all"))
+        except Exception as e:
+            print(f"Erro ao carregar vagas: {e}")
     
     def _update_selected_project(self, name, description):
         """Update the selected project information display"""
-        self.project_name_value.config(text=name)
-        self.project_desc_value.config(text=description if description else "")
-        # Update wraplength after setting text
-        self._on_window_resize()
+        if name:
+            # Show project info frame and content panel
+            self.project_info_frame.grid()
+            self.content_panel.grid()
+            self.project_name_value.config(text=name)
+            self.project_desc_value.config(text=description if description else "")
+            # Update wraplength after setting text
+            self._on_window_resize()
+            # Load vacancies for the selected project
+            self._load_vacancies()
+        else:
+            # Hide project info frame and content panel if no project selected
+            self.project_info_frame.grid_remove()
+            self.content_panel.grid_remove()
+            # Clear vacancies list
+            for widget in self.vacancies_content_frame.winfo_children():
+                widget.destroy()
 

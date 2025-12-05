@@ -42,7 +42,7 @@ class JobMatchApp:
         
         # Configure main window
         self.splash.update_progress(80, "Configurando interface...")
-        self.root.title("Job Match")
+        self.root.title(f"JobMatch - Versão {Settings.APP_VERSION}")
         self.root.geometry(f"{Settings.WINDOW_WIDTH}x{Settings.WINDOW_HEIGHT}")
         
         # Set window icon

@@ -6,7 +6,7 @@ Dialog for creating a new project
 import tkinter as tk
 from tkinter import ttk, messagebox
 from src.utils.helpers import center_window
-from src.database.db import Database
+from src.entities.project import Project
 
 
 class NewProjectDialog:
@@ -77,20 +77,15 @@ class NewProjectDialog:
             
             # Insert into database
             try:
-                db = Database()
-                conn = db.connect()
-                cursor = conn.cursor()
-                cursor.execute(
-                    "INSERT INTO project (name, description) VALUES (?, ?)",
-                    (name, description if description else None)
-                )
-                project_id = cursor.lastrowid
-                conn.commit()
-                db.close()
+                project = Project.create(name, description if description else None)
                 
                 # Call callback with project information
                 if self.on_project_created:
-                    self.on_project_created(project_id, name, description if description else "")
+                    self.on_project_created(
+                        project.id,
+                        project.name,
+                        project.description if project.description else ""
+                    )
                 
                 self.dialog.destroy()
             except Exception as e:

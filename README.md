@@ -50,21 +50,27 @@ desktop/
 │   ├── favicon.png        # Favicon em formato PNG
 │   └── job_match_logo.png # Logo do Job Match
 ├── scripts/               # Scripts SQL de inicialização do banco
-│   └── 001-Create_Table_Project.sql  # Script de criação da tabela project
+│   ├── 001-Create_Table_Project.sql      # Script de criação da tabela project
+│   └── 002-Create_Table_Job_Vacancy.sql # Script de criação da tabela job_vacancy
 └── src/                   # Código fonte
     ├── __init__.py
     ├── app.py             # Classe principal da aplicação
     ├── ui/                # Componentes de interface
     │   ├── __init__.py
-    │   ├── main_window.py        # Janela principal com barra de status
+    │   ├── main_window.py        # Janela principal com painéis divididos e barra de status
     │   ├── splash_screen.py     # Tela de splash com barra de progresso
     │   ├── new_project_dialog.py # Diálogo de cadastro de projeto
     │   ├── open_project_dialog.py # Diálogo para abrir projeto existente
+    │   ├── new_vacancy_dialog.py # Diálogo de cadastro de vaga
     │   ├── about_dialog.py       # Diálogo sobre a aplicação
     │   ├── configuration_dialog.py # Diálogo de configurações
     │   └── builders/      # Builders de componentes UI
     │       ├── __init__.py
     │       └── main_menu.py       # Builder do menu principal
+    ├── entities/          # Entidades de domínio
+    │   ├── __init__.py
+    │   ├── project.py    # Entidade Project com operações de banco
+    │   └── job_vacancy.py # Entidade JobVacancy com operações de banco
     ├── database/          # Gerenciamento de banco de dados
     │   ├── __init__.py
     │   └── db.py          # Classe de gerenciamento do banco SQLite

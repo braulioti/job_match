@@ -198,3 +198,4 @@ class SplashScreen:
         if self.splash:
             self.splash.destroy()
             self.splash = None
+
