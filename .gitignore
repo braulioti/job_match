@@ -43,3 +43,5 @@ logs/
 *.spec~
 *.pyc
 
+# Banco de Dados temporário
+projects.job.match

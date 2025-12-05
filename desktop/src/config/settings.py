@@ -3,6 +3,7 @@ Application Settings
 """
 
 import os
+import sys
 from pathlib import Path
 
 
@@ -13,10 +14,26 @@ class Settings:
     APP_NAME = "Job Match"
     APP_VERSION = "0.1.0"
     
+    # Database settings
+    DB_NAME = "projects.job.match"  # Nome padrão do banco de dados
+    
     # Paths
-    BASE_DIR = Path(__file__).parent.parent.parent
+    # Determina o diretório base: pasta do executável ou pasta do script
+    if getattr(sys, 'frozen', False):
+        # Executável compilado (PyInstaller)
+        BASE_DIR = Path(sys.executable).parent
+    else:
+        # Modo desenvolvimento
+        BASE_DIR = Path(__file__).parent.parent.parent
+    
     DATA_DIR = BASE_DIR / "data"
     LOGS_DIR = BASE_DIR / "logs"
+    
+    # Database path
+    @classmethod
+    def get_db_path(cls):
+        """Get the full path to the database file"""
+        return cls.BASE_DIR / f"{cls.DB_NAME}"
     
     # Window settings
     WINDOW_WIDTH = 800

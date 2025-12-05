@@ -10,6 +10,7 @@ a = Analysis(
     hiddenimports=[
         'tkinter',
         'tkinter.ttk',
+        'sqlite3',
         'src',
         'src.app',
         'src.ui',
@@ -18,6 +19,8 @@ a = Analysis(
         'src.utils.helpers',
         'src.config',
         'src.config.settings',
+        'src.database',
+        'src.database.db',
     ],
     hookspath=[],
     hooksconfig={},
