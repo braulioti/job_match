@@ -12,6 +12,7 @@ from src.config.settings import Settings
 from src.database.db import initialize_database
 from src.manager.config_manager import ConfigManager
 from src.manager.server_manager import ServerManager
+from src.integration.server_integration import ServerIntegration
 
 
 class JobMatchApp:
@@ -59,6 +60,10 @@ class JobMatchApp:
             selected_server=self.selected_server,
             on_server_changed=self._on_server_changed
         )
+        
+        # Check server health and update status
+        self.splash.update_progress(95, "Verificando servidor...")
+        self._check_server_health()
         
         # Finalize
         self.splash.update_progress(100, "Concluído!")
@@ -117,6 +122,26 @@ class JobMatchApp:
         style.configure('TLabel', background='#f0f0f0', font=('Segoe UI', 10))
         style.configure('TButton', font=('Segoe UI', 10))
     
+    def _check_server_health(self):
+        """Check server health and update status bar"""
+        if not self.selected_server:
+            if self.main_window:
+                self.main_window.update_server_status("Nenhum servidor configurado", False)
+            return
+        
+        server_integration = ServerIntegration()
+        server_integration.server = self.selected_server
+        
+        health_result = server_integration.check_health()
+        
+        if self.main_window:
+            if health_result['success']:
+                status_text = f"{self.selected_server['name']} - {self.selected_server['url']} (Online)"
+                self.main_window.update_server_status(status_text, True)
+            else:
+                status_text = f"{self.selected_server['name']} - {self.selected_server['url']} (Offline)"
+                self.main_window.update_server_status(status_text, False)
+    
     def _on_server_changed(self, new_server):
         """
         Handle server change from configuration dialog
@@ -128,6 +153,8 @@ class JobMatchApp:
         # Update main window's selected_server reference
         if self.main_window:
             self.main_window.selected_server = new_server
+            # Check health of new server
+            self._check_server_health()
     
     def _show_main_window(self):
         """Close splash screen and show main window"""
