@@ -37,6 +37,7 @@ a = Analysis(
     binaries=platformdirs_binaries + pkg_resources_binaries,
     datas=[
         ('images', 'images'),  # Incluir pasta images
+        ('scripts', 'scripts'),  # Incluir scripts SQL
     ] + platformdirs_datas + pkg_resources_datas,
     hiddenimports=[
         'tkinter',

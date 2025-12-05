@@ -5,3 +5,4 @@
 - Criada estrutura básica de frontend
 - Criado tela para criar novo projeto
 - Definido as imagens do projeto
+- Refatorado a forma de criação de tabelas no banco dados utilizando scripts
