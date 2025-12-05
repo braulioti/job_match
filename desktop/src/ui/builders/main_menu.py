@@ -9,19 +9,21 @@ import tkinter as tk
 class MainMenuBuilder:
     """Builder class for creating the main application menu"""
     
-    def __init__(self, parent, on_new_project=None, on_exit=None, on_about=None, on_settings=None):
+    def __init__(self, parent, on_new_project=None, on_open_project=None, on_exit=None, on_about=None, on_settings=None):
         """
         Initialize the menu builder
         
         Args:
             parent: Parent window (tk.Tk or tk.Toplevel)
             on_new_project: Callback function for "Cadastrar Novo Projeto" menu item
+            on_open_project: Callback function for "Abrir Projeto" menu item
             on_exit: Callback function for "Sair" menu item
             on_about: Callback function for "Sobre" menu item
             on_settings: Callback function for "Configurações" menu item
         """
         self.parent = parent
         self.on_new_project = on_new_project
+        self.on_open_project = on_open_project
         self.on_exit = on_exit
         self.on_about = on_about
         self.on_settings = on_settings
@@ -63,6 +65,13 @@ class MainMenuBuilder:
             accelerator="Ctrl+N"
         )
         
+        # Abrir Projeto
+        arquivo_menu.add_command(
+            label="Abrir Projeto...",
+            command=self._handle_open_project,
+            accelerator="Ctrl+A"
+        )
+        
         arquivo_menu.add_separator()
         
         # Sair
@@ -98,11 +107,17 @@ class MainMenuBuilder:
         """Bind keyboard shortcuts"""
         self.parent.bind('<Control-q>', lambda e: self._handle_exit())
         self.parent.bind('<Control-n>', lambda e: self._handle_new_project())
+        self.parent.bind('<Control-a>', lambda e: self._handle_open_project())
     
     def _handle_new_project(self):
         """Handle new project menu item click"""
         if self.on_new_project:
             self.on_new_project()
+    
+    def _handle_open_project(self):
+        """Handle open project menu item click"""
+        if self.on_open_project:
+            self.on_open_project()
     
     def _handle_exit(self):
         """Handle exit menu item click"""

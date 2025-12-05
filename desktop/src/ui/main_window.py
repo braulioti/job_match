@@ -6,6 +6,7 @@ import tkinter as tk
 from tkinter import ttk
 from PIL import Image, ImageTk
 from src.ui.new_project_dialog import NewProjectDialog
+from src.ui.open_project_dialog import OpenProjectDialog
 from src.ui.about_dialog import AboutDialog
 from src.ui.configuration_dialog import ConfigurationDialog
 from src.ui.builders.main_menu import MainMenuBuilder
@@ -40,6 +41,7 @@ class MainWindow:
         menu_builder = MainMenuBuilder(
             parent=self.parent,
             on_new_project=self._show_new_project_dialog,
+            on_open_project=self._show_open_project_dialog,
             on_exit=self._on_exit,
             on_about=self._show_about,
             on_settings=self._show_configuration_dialog
@@ -61,6 +63,18 @@ class MainWindow:
             self._update_selected_project(name, description)
         
         NewProjectDialog(self.parent, on_project_created)
+    
+    def _show_open_project_dialog(self):
+        """Show dialog to open an existing project"""
+        def on_project_selected(project_id, name, description):
+            """Callback when project is selected"""
+            # Store project ID globally
+            self.selected_project_id = project_id
+            
+            # Update UI with project information
+            self._update_selected_project(name, description)
+        
+        OpenProjectDialog(self.parent, on_project_selected)
     
     def _show_about(self):
         """Show about dialog"""
@@ -155,7 +169,7 @@ class MainWindow:
             text="",
             font=('Segoe UI', 10)
         )
-        self.project_name_value.grid(row=0, column=1, sticky=tk.W, padx=(5, 0))
+        self.project_name_value.grid(row=0, column=1, sticky=(tk.W, tk.E), padx=(5, 0))
         
         # Project description label
         self.project_desc_label = ttk.Label(
@@ -163,15 +177,18 @@ class MainWindow:
             text="Descrição: ",
             font=('Segoe UI', 10, 'bold')
         )
-        self.project_desc_label.grid(row=1, column=0, sticky=tk.W, pady=(5, 0))
+        self.project_desc_label.grid(row=1, column=0, sticky=(tk.W, tk.N), pady=(5, 0))
         
         self.project_desc_value = ttk.Label(
             project_info_frame,
             text="",
             font=('Segoe UI', 10),
-            wraplength=600
+            wraplength=1  # Will be updated dynamically
         )
-        self.project_desc_value.grid(row=1, column=1, sticky=tk.W, padx=(5, 0), pady=(5, 0))
+        self.project_desc_value.grid(row=1, column=1, sticky=(tk.W, tk.E), padx=(5, 0), pady=(5, 0))
+        
+        # Bind to window resize to update wraplength
+        self.parent.bind('<Configure>', self._on_window_resize)
         
         # Content area
         content_frame = ttk.Frame(main_frame)
@@ -215,8 +232,22 @@ class MainWindow:
                 fg='#c62828'  # Red color
             )
     
+    def _on_window_resize(self, event=None):
+        """Handle window resize to update wraplength"""
+        if event and event.widget == self.parent:
+            # Update wraplength based on window width
+            # Account for padding, label width, and margins
+            window_width = self.parent.winfo_width()
+            if window_width > 1:  # Avoid initial sizing issues
+                # Calculate available width: window width - padding - label width - margins
+                available_width = window_width - 40 - 150 - 20  # Approximate
+                if available_width > 0:
+                    self.project_desc_value.config(wraplength=available_width)
+    
     def _update_selected_project(self, name, description):
         """Update the selected project information display"""
         self.project_name_value.config(text=name)
         self.project_desc_value.config(text=description if description else "")
+        # Update wraplength after setting text
+        self._on_window_resize()
 
