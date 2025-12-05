@@ -7,6 +7,7 @@
 [![SQLite](https://img.shields.io/badge/sqlite-%2307405e.svg?style=for-the-badge&logo=sqlite&logoColor=white)](https://sqlite.org/)
 [![Flask](https://img.shields.io/badge/flask-%23000.svg?style=for-the-badge&logo=flask&logoColor=white)](https://flask.palletsprojects.com/en/stable/)
 [![Docker](https://img.shields.io/badge/docker-%230db7ed.svg?style=for-the-badge&logo=docker&logoColor=white)](https://www.docker.com/)
+[![Swagger](https://img.shields.io/badge/-Swagger-%23Clojure?style=for-the-badge&logo=swagger&logoColor=white)](https://swagger.io/)
 
 Serviço de avaliação de currículos para avaliar o grau de aderência do currículo com a vaga.
 
@@ -20,7 +21,7 @@ Novas atualizações do projeto podem ser acompanhadas através do X:
   - [Aplicação Desktop](#aplicação-desktop)
   - [Projeto Backend API](#projeto-backend-api)
   - [Integração Contínua](#integração-contínua)
-- [Requisitos](#requisitos)
+- [Tencnologias](#tencnologias)
 - [Instalação](#instalação)
 - [Versão Desktop](#versão-desktop)
   - [Build da versão](#build-da-versão)
@@ -29,6 +30,7 @@ Novas atualizações do projeto podem ser acompanhadas através do X:
 - [Projeto Backend API](#projeto-backend-api-1)
   - [Health Check Endpoint](#health-check-endpoint)
   - [API v1](#api-v1)
+  - [Documentação de API - Swagger](#documentação-de-api---swagger)
 - [Versionamento](#versionamento)
 - [Autor](#autor)
 
@@ -97,7 +99,12 @@ api/
 │   └── settings.py
 ├── routes/           # Rotas da API
 │   ├── __init__.py
-│   └── routes.py
+│   ├── routes.py
+│   └── swagger/      # Rotas de documentação Swagger
+│       ├── __init__.py
+│       └── swagger.py # Classe para renderizar Swagger UI
+├── swagger/          # Documentação Swagger/OpenAPI
+│   └── pt-BR.yaml    # Especificação OpenAPI em português brasileiro
 ├── models/           # Modelos de dados
 │   ├── __init__.py
 │   └── models.py
@@ -115,7 +122,7 @@ ci-cd/
     └── .dockerignore        # Arquivos ignorados no build Docker
 ```
 
-## Requisitos
+## Tencnologias
 
 - Python 3.8 ou superior
 - Tkinter (incluído com Python)
@@ -123,6 +130,7 @@ ci-cd/
 - Flask 3.0.0 ou superior
 - Docker Engine 20.10 ou superior
 - Docker Compose 2.0 ou superior
+- Swagger Open API 3.0
 
 ## Instalação
 
@@ -187,6 +195,30 @@ Caso queira subir a aplicação em um servidor dentro da sua empresa, basta adic
 
 ### API v1
 - Todos os endpoints da API estão disponíveis em `/api/v1`
+
+### Documentação de API - Swagger
+
+A API possui documentação interativa usando Swagger/OpenAPI 3.0. A documentação está disponível em português brasileiro e pode ser acessada através dos seguintes endpoints:
+
+- **Swagger UI**: `http://localhost:5000/docs`
+  - Interface interativa para explorar e testar os endpoints da API
+  - Permite visualizar todos os endpoints, parâmetros, respostas e exemplos
+  - Possibilita testar os endpoints diretamente pela interface
+
+- **Especificação YAML**: `http://localhost:5000/docs/swagger.yaml`
+  - Arquivo YAML com a especificação completa da API em formato OpenAPI 3.0.3
+  - Localizado em `api/swagger/pt-BR.yaml`
+
+- **Especificação JSON**: `http://localhost:5000/docs/swagger.json`
+  - Mesma especificação em formato JSON para integração com outras ferramentas
+
+A documentação inclui:
+- Descrição de todos os endpoints disponíveis
+- Parâmetros de requisição e resposta
+- Exemplos de uso
+- Modelos de dados (schemas)
+- Códigos de status HTTP
+- Informações de autenticação (preparado para implementação futura)
 
 ## Versionamento
 

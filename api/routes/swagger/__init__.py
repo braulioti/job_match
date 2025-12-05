@@ -1,0 +1,4 @@
+"""
+Swagger routes module
+"""
+
