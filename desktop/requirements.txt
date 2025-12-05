@@ -1,0 +1,19 @@
+# Job Match Desktop Application Dependencies
+# Python 3.8+
+
+pyinstaller==6.4.0
+pyinstaller-hooks-contrib==2024.8
+
+# Core dependencies
+# Add your project dependencies here
+# Example:
+# requests>=2.28.0
+# pandas>=1.5.0
+
+# GUI Framework (optional - Tkinter is included with Python)
+# If you want to use PyQt5 instead:
+# PyQt5>=5.15.0
+
+# If you want to use PySide6 instead:
+# PySide6>=6.4.0
+
