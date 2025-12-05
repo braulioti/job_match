@@ -81,7 +81,7 @@ class NewProjectDialog:
                 conn = db.connect()
                 cursor = conn.cursor()
                 cursor.execute(
-                    "INSERT INTO projects (name, description) VALUES (?, ?)",
+                    "INSERT INTO project (name, description) VALUES (?, ?)",
                     (name, description if description else None)
                 )
                 project_id = cursor.lastrowid

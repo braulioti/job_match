@@ -12,6 +12,15 @@ Job Match é criado e mantido por [Bráulio Figueiredo](http://braulioti.com.br)
 Novas atualizações do projeto podem ser acompanhadas através do X:
 [@_brau_io](https://x.com/_brau_io).
 
+## Índice
+
+- [Estrutura do Projeto](#estrutura-do-projeto)
+- [Requisitos](#requisitos)
+- [Instalação](#instalação)
+- [Build da Versão Desktop](#build-da-versão-desktop)
+- [Versionamento](#versionamento)
+- [Autor](#autor)
+
 ## Estrutura do Projeto
 
 ```
@@ -26,6 +35,8 @@ desktop/
 │   ├── favicon.ico        # Ícone da aplicação
 │   ├── favicon.png        # Favicon em formato PNG
 │   └── job_match_logo.png # Logo do Job Match
+├── scripts/               # Scripts SQL de inicialização do banco
+│   └── 001-Create_Table_Project.sql  # Script de criação da tabela project
 └── src/                   # Código fonte
     ├── __init__.py
     ├── app.py             # Classe principal da aplicação
@@ -84,7 +95,7 @@ O script irá:
 O executável será criado em: `desktop/dist/JobMatch.exe`
 
 <div style="border-left: 4px solid #f44336; padding: 12px; margin: 16px 0;">
-<strong style="color: #c62828;">⚠️ IMPORTANTE:</strong> Para que a aplicação funcione corretamente, a pasta <code>images</code> deve ser distribuída junto com o executável. Certifique-se de copiar a pasta <code>images</code> para o mesmo diretório onde está o <code>JobMatch.exe</code>.
+<strong style="color: #c62828;">⚠️ IMPORTANTE:</strong> Para que a aplicação funcione corretamente, as pastas <code>images</code> e <code>scripts</code> devem ser distribuídas junto com o executável. Certifique-se de copiar as pastas <code>images</code> e <code>scripts</code> para o mesmo diretório onde está o <code>JobMatch.exe</code>.
 </div>
 
 ## Versionamento
