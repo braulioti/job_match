@@ -1,0 +1,202 @@
+SOMOS UMA CONSULTORIA DE TI fundada em 1.992 e preparada para ajudar na otimização dos seus processos de TI.
+
+
+Diferenciais:
+Uma empresa madura, cujas experiências acumuladas permitem diferenciais na sua forma de fazer negócio. No serviço personalizado, no comprometimento e na qualidade. Assim tem sido nossa empresa ao longo dos anos, apoiando seus clientes e destacando-se entre as alternativas de mercado.
+Estamos contratando:
+
+
+Analista Desenvolvedor Fullstack NodeJs +Vue JS
+
+
+
+
+Requisitos técnicos:
+
+
+Formação em Ciências da Computação, Engenharia da Computação ou área relevante;
+
+
+Conhecimento em NodeJs;
+Conhecimento em VueJs;
+Experiência em arquitetura de microsserviços;
+Conhecer ferramentas de controle de versão de código (TFS / GitHub);
+Ter atuado com linguagens de programação Web ( desenvolvimento Full Stack) e criação de serviços / API.
+
+
+Desejável:
+Conhecimento em Vuetify
+Conhecimento em Elastic Search
+Arquitetura em nuvem.
+Conhecimento de Banco de Dados Neo4J.
+Conhecimento de Banco de Dados MongoDB.
+
+
+Contratação: CLT
+Home office
+
+
+
+Dados do currículo
+
+
+
+Engenheiro de Software /
+Tech Lead
+
+42 anos
+Endereço: Adelina Gertrudes
+Jacinto, 49 – Apto. 504 –
+Centro, Florianópolis/SC/Brasil
+REDES SOCIAIS
+linkedin.com/in/brauliofp
+stackoverflow.com/users/5152480
+github.com/braulioti
+
+BRAULIO FIGUEIREDO
+COMPETÊNCIAS
+PERFIL
+Profissional de TI com a atuação de vinte e sete anos no ramo com trabalho focado
+na área Financeira e Saúde, na qual possuo experiência no gerenciamento de
+resultados, detecção de fraude, análise de faturamento, administração do fluxo de
+caixa. Experiências em Análise de Sistemas, Coordenação, Arquitetura e
+Desenvolvimento de Sistemas.
+
+
+
+
+EXPERIÊNCIA PROFISSIONAL
+Analista de Desenvolvimento Sênior – Sicoob
+Brasília/SC (remoto)
+Janeiro/2023 até Setembro/2025
+Desenvolvimento de soluções backend usando Java (springboot) e NodeJS para o
+sistema de pagamentos instantâneos PIX
+Desenvolvedor Frontend Angular – Code7
+Florianópolis/SC
+Abril/2022 até Janeiro/2023
+Desenvolvimento frontend em Angular 9 do projeto Sendfy
+Coordenador de Garantia de Receitas – OZZ Saúde
+Florianópolis/SC
+Setembro/2021 até Abril/2022
+Responsável por automatizar os processos que podem gerar gastos e otimizar os
+ganhos da empresa através de infraestrutura de Datalake AWS e desenvolvimento
+de estrutura de dados em Python, NodeJS e Angular a serviço do SAMU/SC
+Analista Desenvolvedor Sênior – Publicações Online
+Florianópolis/SC
+Março/2021 até Setembro/2021
+Desenvolvedor fullstack Angular/Java e Scrum Master para o projeto de captura e
+transformação de dados Jurídicos
+Coordenador da Sala de Situação – Secretaria de Estado da Saúde / SC
+Florianópolis/SC
+Abril/2020 – Abril/2021
+Coordenador de projetos de coleta, transformação e análise de dados para a
+pandemia no Governo do Estado de SC. Desenvolvedor do projeto “SES Leitos” de
+monitoramento de leitos e pacientes COVID no estado de SC
+Coordenador de desenvolvimento de projetos – 4Effect Tecnologia
+Florianópolis/SC
+Outubro/2017 – Outubro/2019
+Coordenador de projetos de software liderando equipes de desenvolvimento de
+sistemas para médias e grandes empresas e órgãos do governo
+Angular / NodeJS / PostgreSQL /
+Bootstrap / HTML5 / CSS / Git /
+Python / Agile e Scrum / Linux /
+Docker / Delphi / Java / Oracle BD /
+PHP
+
+CONTATOS
+IDIOMAS
+
+ Português: Nativo
+Espanhol: Fluente
+Inglês: Avançado
+
+
+ 
+ +55 (48) 98454-2144
+braulio@braulioti.com.br
+https://brau.io
+Desenvolvedor – Qualirede
+Florianópolis/SC
+Junho/2017 – Setembro/2017
+Criação de regras para análise de guias médicas para precificação e detecção de fraudes.
+Consultor de TI – WeDo Technologies
+Florianópolis/SC
+Junho/2016 – Maio/2017
+Consultoria em técnicas de detecção de Fraude em estrutura de big data para segmento de Telecom em empresas no Chile, Peru
+e Bolívia
+Analista de Sistemas – BRD Soluções em Tecnologia
+Florianópolis/SC
+Junho/2015 – Maio/2016
+Análise e desenvolvimento de sistemas e migração de sistemas em Delphi para Java (JSF/Primefaces) a serviço da Secretaria de
+Saúde de Santa Catarina
+Desenvolvedor – Datainfo Soluções
+Florianópolis/SC
+Abril/2014 – Agosto/2015
+Manutenção e desenvolvimento de sistemas Delphi/SQL Server para a Secretaria de Saúde de Santa Catarina
+Analista Implementador Pleno – Módula Software Ltda.
+Florianópolis/SC
+Novembro/2013 – Fevereiro/2014
+Desenvolvimento de sistemas financeiro na linguagem Delphi com banco de dados PostgreSQL.
+Analista Desenvolvedor – IBTECH
+Belo Horizonte/MG
+Junho/2013 – Novembro/2013
+Desenvolvimento de sistemas WEB para Gestão Pública usando JSF e JavaFX com banco de dados PostgreSQL e MongoDB.
+Instalação, configuração e manutenção do servidor linux das aplicações e site da empresa.
+Analista Administrativo Sênior – ASSEFAZ - Fundação Assistencial dos Servidores do Ministério da Fazenda
+Brasília/DF
+Maio/2007 – Dezembro/2011
+Responsável pela automatização de processos, elaboração de budget e forecast em estrutura de big data da Fundação.
+Identificação de falhas e ineficiências na apuração de custos e planejamento orçamentário. Desenvolvimento de sistemas para a
+presidência para acompanhar evolução das aplicações financeiros, detecção de fraudes e inconsistências, resultados dos clubes
+e colônias de férias e elaboração de relatórios para o Ministério Público utilizando tecnologia interna da empresa.
+Analista de Sistemas – DHISA Auditoria e Assessoria Contábil
+Belo Horizonte/MG
+Janeiro/2003 – Junho/2006
+Desenvolvimento e análise de sistemas administrativos usando Delphi, Access, PHP, MySQL e PostgreSQL, administração de
+rede, desenvolvimento de sistemas internos. Integração dos sistemas financeiros dos clientes com o sistema contábil da
+empresa.
+Programador – T&A Soft
+Belo Horizonte/MG
+Setembro/2001 – Novembro/2002
+Desenvolvimento de sistemas de contabilidade gerencial, folha de pagamento e sistema financeiro usando Delphi e banco de
+dados InterBase. Implantação e treinamento dos sistemas no cliente.
+Programador – ADI Assessoria e Desenvolvimento em Informática
+Belo Horizonte/MG
+Outubro/2000 – Dezembro/2000
+Desenvolvimento de sistemas de contabilidade gerencial, folha de pagamento e sistema financeiro usando Delphi e banco de
+dados InterBase. Implantação e treinamento dos sistemas no cliente.
+FORMAÇÃO ACADÊMICA
+MBA Compliance e Investigação de Fraudes / Trevisan Escola de Negócios
+2021
+Superior em Tecnologia da Informação / Centro Universitário Newton Paiva
+2001 – 2006
+Técnico em Informática Gerencial / Colégio COTEMIG
+1998 – 2000
+LICENÇAS E CERTIFICAÇÕES PROFISSIONAIS
+COVID019: Trackling The Novel Coronavirus / London School of Hygiene and Tropical Medicine
+Setembro/2020 – Credencial: 6oewah4
+DECP – DevOps Essentials Professional Certificate / Certiprof
+Julho/2020 – Credencial: 42704199
+SFCP – Scrum Foundation Professional Certificate / Certiprof
+Julho/2020 – Credencial: JLSRHPTDST-VHTTWNCK-YBJTBSRJSS
+Scrum Fundamentals Certified / SCRUMstudy
+Julho/2019 – Credencial: 717797
+Digital Marketing Fundamentals / SMstudy
+Julho/2019 – Credencial: 595593
+PHP Developer Certificate / W3Schools.com
+Julho/2012 – Credencial: 3663557
+CURSOS COMPLEMENTARES
+Aplicações de IA com Langchain – Asimov Academy
+Angular – Pruebas Unitarias com Jest – Udemy
+Datalakes: Bigdata com Arquitetura Lambda – Udemy
+NodeJS Microservices - NestJS, RabbitMQ and Cloud Services – DFS Training
+Python para Data Science e Machine Learning – Completo – Asimov Academy
+Agents de IA com Python e Langchain – Asimov Academy
+Big Data analytics for Telecom – RankOne Consulting
+Datalakes: Bigdata com Arquitetura Lambda – Udemy (Prof. Fernando Amaral)
+Financial Planning – TAFE NSW Sidney Institute
+M101JS - MongoDB for Node.js Developers – Mongo University
+Do Zero à Nuvem: API Resful com NodeJS, Restify e MongoDB – COD3R
+CURSOS EM ANDAMENTO
+Spring Boot 2025 REST API's do 0 à AWS e GCP c Java e Docker – Udemy
+COBOL Curso Completo – Do básico a um Sistema com telas – Udemy

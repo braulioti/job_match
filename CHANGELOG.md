@@ -14,3 +14,4 @@
 - Exibido o status do servidor na barra de status da aplicação Desktop
 - Criado tela de listagem de projetos
 - Criado o cadastro e listagem de vagas
+- Adicionado a conexão com o modelo Ollama
