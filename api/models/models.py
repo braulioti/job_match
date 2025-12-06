@@ -1,5 +1,12 @@
 """
 Data Models
+SQLAlchemy models for the API
+
+This module imports all models to ensure they are registered with SQLAlchemy.
 """
 
-# TODO: Implement data models for the API
+# Import all models to ensure they are registered
+from api.models.base_model import BaseModel
+from api.models.file import File
+
+__all__ = ['BaseModel', 'File']

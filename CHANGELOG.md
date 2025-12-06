@@ -1,6 +1,6 @@
 ## Changelog
 
-### 05/12/2025 - Versão 0.1.0-RC1
+### 06/12/2025 - Versão 0.1.0-RC1
 #### Features
 - Criada estrutura básica de frontend
 - Criado tela para criar novo projeto
@@ -14,4 +14,4 @@
 - Exibido o status do servidor na barra de status da aplicação Desktop
 - Criado tela de listagem de projetos
 - Criado o cadastro e listagem de vagas
-- Adicionado a conexão com o modelo Ollama
+- Adicionado a conexão com o modelo Ollama e Gemini
