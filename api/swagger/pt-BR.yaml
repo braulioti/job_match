@@ -20,8 +20,6 @@ servers:
 tags:
   - name: Health
     description: Endpoints de verificação de saúde da API
-  - name: Projetos
-    description: Operações relacionadas a projetos
 
 paths:
   /health:
@@ -49,7 +47,7 @@ paths:
   /api/v1:
     get:
       tags:
-        - Projetos
+        - Health
       summary: Informações da API
       description: Retorna informações sobre a API e seus endpoints
       operationId: apiInfo
@@ -73,219 +71,9 @@ paths:
                       health:
                         type: string
                         example: /health
-                      projects:
-                        type: string
-                        example: /api/v1/projects
-
-  /api/v1/projects:
-    get:
-      tags:
-        - Projetos
-      summary: Lista todos os projetos
-      description: Retorna uma lista de todos os projetos cadastrados
-      operationId: getProjects
-      responses:
-        '200':
-          description: Lista de projetos retornada com sucesso
-          content:
-            application/json:
-              schema:
-                type: object
-                properties:
-                  projects:
-                    type: array
-                    items:
-                      $ref: '#/components/schemas/Project'
-                  count:
-                    type: integer
-                    example: 0
-
-    post:
-      tags:
-        - Projetos
-      summary: Cria um novo projeto
-      description: Cria um novo projeto no sistema
-      operationId: createProject
-      requestBody:
-        required: true
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/ProjectInput'
-            example:
-              name: Projeto Exemplo
-              description: Descrição do projeto exemplo
-      responses:
-        '201':
-          description: Projeto criado com sucesso
-          content:
-            application/json:
-              schema:
-                type: object
-                properties:
-                  message:
-                    type: string
-                    example: Project created successfully
-                  project:
-                    $ref: '#/components/schemas/Project'
-        '400':
-          description: Erro na validação dos dados
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/Error'
-
-  /api/v1/projects/{project_id}:
-    get:
-      tags:
-        - Projetos
-      summary: Obtém um projeto específico
-      description: Retorna os detalhes de um projeto pelo ID
-      operationId: getProject
-      parameters:
-        - name: project_id
-          in: path
-          required: true
-          description: ID do projeto
-          schema:
-            type: integer
-            example: 1
-      responses:
-        '200':
-          description: Projeto encontrado
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/Project'
-        '404':
-          description: Projeto não encontrado
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/Error'
-
-    put:
-      tags:
-        - Projetos
-      summary: Atualiza um projeto
-      description: Atualiza os dados de um projeto existente
-      operationId: updateProject
-      parameters:
-        - name: project_id
-          in: path
-          required: true
-          description: ID do projeto
-          schema:
-            type: integer
-            example: 1
-      requestBody:
-        required: true
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/ProjectInput'
-      responses:
-        '200':
-          description: Projeto atualizado com sucesso
-          content:
-            application/json:
-              schema:
-                type: object
-                properties:
-                  message:
-                    type: string
-                    example: Project updated successfully
-                  project_id:
-                    type: integer
-                    example: 1
-        '404':
-          description: Projeto não encontrado
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/Error'
-
-    delete:
-      tags:
-        - Projetos
-      summary: Remove um projeto
-      description: Remove um projeto do sistema
-      operationId: deleteProject
-      parameters:
-        - name: project_id
-          in: path
-          required: true
-          description: ID do projeto
-          schema:
-            type: integer
-            example: 1
-      responses:
-        '200':
-          description: Projeto removido com sucesso
-          content:
-            application/json:
-              schema:
-                type: object
-                properties:
-                  message:
-                    type: string
-                    example: Project deleted successfully
-                  project_id:
-                    type: integer
-                    example: 1
-        '404':
-          description: Projeto não encontrado
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/Error'
 
 components:
   schemas:
-    Project:
-      type: object
-      properties:
-        id:
-          type: integer
-          description: ID único do projeto
-          example: 1
-        name:
-          type: string
-          description: Nome do projeto
-          example: Projeto Exemplo
-        description:
-          type: string
-          description: Descrição do projeto
-          example: Descrição detalhada do projeto
-        created_at:
-          type: string
-          format: date-time
-          description: Data e hora de criação do projeto
-          example: 2024-01-01T12:00:00Z
-        updated_at:
-          type: string
-          format: date-time
-          description: Data e hora da última atualização
-          example: 2024-01-01T12:00:00Z
-      required:
-        - id
-        - name
-        - created_at
-
-    ProjectInput:
-      type: object
-      properties:
-        name:
-          type: string
-          description: Nome do projeto
-          example: Projeto Exemplo
-        description:
-          type: string
-          description: Descrição do projeto
-          example: Descrição detalhada do projeto
-      required:
-        - name
-
     Error:
       type: object
       properties:

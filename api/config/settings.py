@@ -22,6 +22,9 @@ class Config:
     
     # CORS
     CORS_ORIGINS = os.environ.get('CORS_ORIGINS', '*').split(',')
+    
+    # Prompt Configuration
+    PROMPT_JOB_ANALYS = os.environ.get('PROMPT_JOB_ANALYS', './prompts/job_vacancy_analysis.txt')
 
 
 class DevelopmentConfig(Config):

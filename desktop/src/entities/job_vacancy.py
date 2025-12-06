@@ -163,3 +163,4 @@ class JobVacancy:
         """
         return cls.get_all(project_id=project_id, order_by=order_by)
 
+

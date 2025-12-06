@@ -199,3 +199,4 @@ class SplashScreen:
             self.splash.destroy()
             self.splash = None
 
+

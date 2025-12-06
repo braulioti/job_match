@@ -1,5 +1,14 @@
+# Flask Framework
 Flask==3.0.0
 flask-cors==4.0.0
 python-dotenv==1.0.0
+
+# Server
 gunicorn==21.2.0
+
+# Data Processing
 PyYAML==6.0.1
+requests>=2.31.0
+
+# AI/ML Providers
+google-generativeai

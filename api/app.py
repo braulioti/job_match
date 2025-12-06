@@ -27,7 +27,7 @@ def create_app(config_class=Config):
     
     # Register Swagger documentation
     try:
-        from routes.swagger.swagger import SwaggerRoute
+        from routes.swagger import SwaggerRoute
         swagger_route = SwaggerRoute()
         app.register_blueprint(swagger_route.blueprint)
         print("Swagger documentation registered at /docs")

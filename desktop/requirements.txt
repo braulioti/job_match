@@ -1,5 +1,6 @@
 # Job Match Desktop Application Dependencies
-# Python 3.8+
+# Python 3.11+ (recomendado para suporte completo e contínuo às bibliotecas de IA do Google)
+# Python 3.10 também funciona, mas o suporte será descontinuado em 2026
 
 pyinstaller==6.4.0
 pyinstaller-hooks-contrib==2024.8
@@ -7,4 +8,4 @@ pyinstaller-hooks-contrib==2024.8
 # Core dependencies
 Pillow>=10.0.0  # For image handling (logo in About dialog)
 platformdirs>=3.0.0  # Required by pkg_resources (used by PyInstaller)
-requests>=2.31.0  # For HTTP requests to API
+requests>=2.32.4  # For HTTP requests to API

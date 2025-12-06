@@ -152,3 +152,4 @@ class OpenProjectDialog:
         self.dialog.update_idletasks()
         center_window(self.dialog, 500, 400)
 
+

@@ -46,3 +46,6 @@ logs/
 # Arquivos temporários do projeto
 desktop/projects.job.match
 desktop/config.ini
+
+# Arquivos de environment
+api/.env
