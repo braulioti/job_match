@@ -75,7 +75,7 @@ class GeminiProvider(BaseProvider):
             
             # Test with a simple prompt to verify API access
             try:
-                test_response = self._model.generate_content(
+                self._model.generate_content(
                     "Test",
                     request_options={"timeout": 5}
                 )
