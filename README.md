@@ -2,7 +2,7 @@
 
 ## Job Match v0.1.0
 
-[![Twitter: @_brau_io](https://img.shields.io/badge/contact-@_brau_io-blue.svg?style=flat)](https://x.com/_brau_io)
+[![X: @_brau_io](https://img.shields.io/badge/contact-@_brau_io-blue.svg?style=flat)](https://x.com/_brau_io)
 [![Codacy Badge](https://app.codacy.com/project/badge/Grade/7121155e1f184c898f147ffdb7a85949)](https://app.codacy.com/gh/braulioti/job_match/dashboard?utm_source=gh&utm_medium=referral&utm_content=&utm_campaign=Badge_grade)
 [![Python](https://img.shields.io/badge/python-3670A0?style=for-the-badge&logo=python&logoColor=ffdd54)](https://www.python.org/)
 [![SQLite](https://img.shields.io/badge/sqlite-%2307405e.svg?style=for-the-badge&logo=sqlite&logoColor=white)](https://sqlite.org/)
@@ -33,6 +33,10 @@ Novas atualizações do projeto podem ser acompanhadas através do X:
   - [API v1](#api-v1)
   - [Documentação de API - Swagger](#documentação-de-api---swagger)
 - [Versionamento](#versionamento)
+- [Contribuições](#contribuições)
+  - [Contribuindo com Código](#contribuindo-com-código)
+  - [Reportando Bugs](#reportando-bugs)
+  - [Sugerindo Novas Funcionalidades](#sugerindo-novas-funcionalidades)
 - [Autor](#autor)
 
 ## Estrutura do Projeto
@@ -133,7 +137,8 @@ ci-cd/
 
 ## Tencnologias
 
-- Python 3.8 ou superior
+- Python 3.11 ou superior (recomendado para suporte completo e contínuo às bibliotecas de IA do Google)
+  - Python 3.10 também funciona, mas o suporte será descontinuado em 2026
 - Tkinter (incluído com Python)
 - SQLite (Aplicação Desktop)
 - Flask 3.0.0 ou superior
@@ -243,6 +248,42 @@ Construído sobre as seguintes diretrizes:
 * Correção de erros em "correção"
 
 Para mais informações sobre o SemVer, por favor visite http://semver.org.
+
+## Contribuições
+
+Contribuições são sempre bem-vindas! Existem várias formas de contribuir com o projeto Job Match:
+
+### Contribuindo com Código
+
+Se você tem conhecimento em programação, pode contribuir diretamente com o código:
+
+1. **Fork o projeto** no GitHub
+2. **Crie uma branch** para sua feature ou correção (`git checkout -b feature/MinhaNovaFuncionalidade`)
+3. **Faça suas alterações** seguindo os padrões do projeto
+4. **Commit suas mudanças** com mensagens claras e descritivas (`git commit -m 'Adiciona nova funcionalidade X'`)
+5. **Push para a branch** (`git push origin feature/MinhaNovaFuncionalidade`)
+6. **Abra um Pull Request** descrevendo suas alterações
+
+### Reportando Bugs
+
+Encontrou um bug? Ajude-nos a melhorar o projeto reportando-o:
+
+- Abra uma [Issue](https://github.com/braulioti/job_match/issues) no GitHub
+- Descreva o problema de forma clara e objetiva
+- Inclua passos para reproduzir o bug
+- Se possível, inclua screenshots ou logs de erro
+- Informe a versão do Job Match e seu sistema operacional
+
+### Sugerindo Novas Funcionalidades
+
+Tem uma ideia para melhorar o Job Match? Compartilhe conosco:
+
+- Abra uma [Issue](https://github.com/braulioti/job_match/issues) no GitHub
+- Descreva a funcionalidade proposta de forma detalhada
+- Explique o problema que ela resolveria ou o benefício que traria
+- Se tiver exemplos ou mockups, compartilhe também
+
+Todas as contribuições, sejam de código, relatórios de bugs ou sugestões, são valiosas para o crescimento do projeto. Obrigado por ajudar a tornar o Job Match melhor!
 
 ## Autor
 - Email: braulio@braulioti.com.br

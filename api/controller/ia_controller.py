@@ -3,8 +3,10 @@ IA Controller
 Handles AI/ML processing logic and exception handling
 """
 
+import base64
 from typing import Dict, Any, Tuple
 
+from api.dto import JobAnalysisDTO
 from api.services.ia_service import IAService
 
 
@@ -27,38 +29,38 @@ class IAController:
                 - status_code: HTTP status code
         """
         try:
-            # Initialize service and validate request data
             ia_service = IAService()
-            validation_result = ia_service.validate(data)
             
-            if not validation_result['valid']:
+            # Decode base64 strings to regular strings
+            try:
+                job_vacancy_b64 = data.get('jobVacancy', '')
+                resume_b64 = data.get('resume', '')
+                
+                job_vacancy = base64.b64decode(job_vacancy_b64).decode('utf-8') if job_vacancy_b64 else ''
+                resume = base64.b64decode(resume_b64).decode('utf-8') if resume_b64 else ''
+            except Exception as e:
                 return {
-                    'error': 'Validation failed',
-                    'errors': validation_result['errors']
+                    'error': 'Invalid base64 encoding',
+                    'message': f'Failed to decode base64 data: {str(e)}'
                 }, 400
             
-            # Get iaModel from request (camelCase)
-            ia_model = data.get('iaModel')
+            job_analysis_dto = JobAnalysisDTO(
+                ia_model=data.get('iaModel'),
+                job_vacancy=job_vacancy,
+                resume=resume
+            )
             
-            # Process using the specified model
-            processed_data = ia_service.process(ia_model)
+            processed_data = ia_service.process(job_analysis_dto)
             
-            return {
-                'message': 'Processing completed',
-                'status': 'success',
-                'iaModel': ia_model,
-                'data': processed_data
-            }, 200
+            return processed_data, 200
             
         except ValueError as e:
-            # Handle validation errors
             return {
                 'error': 'Validation error',
                 'message': str(e)
             }, 400
-            
+
         except Exception as e:
-            # Handle unexpected errors
             return {
                 'error': 'Internal server error',
                 'message': str(e)
