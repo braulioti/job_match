@@ -1,4 +1,4 @@
-# <div align="center"><a href="https://brau.io"><img src="docs/images/job_match_logo.png" alt="Job Match" width="50%"></a></div>
+# <div align="center"><a href="https://brau.io"><img src="docs/images/job_match_logo.png" alt="Job Match" width="70%"></a></div>
 
 ## Job Match v0.1.0
 
@@ -9,6 +9,7 @@
 [![Flask](https://img.shields.io/badge/flask-%23000.svg?style=for-the-badge&logo=flask&logoColor=white)](https://flask.palletsprojects.com/en/stable/)
 [![Docker](https://img.shields.io/badge/docker-%230db7ed.svg?style=for-the-badge&logo=docker&logoColor=white)](https://www.docker.com/)
 [![Swagger](https://img.shields.io/badge/-Swagger-%23Clojure?style=for-the-badge&logo=swagger&logoColor=white)](https://swagger.io/)
+[![Postgres](https://img.shields.io/badge/postgres-%23316192.svg?style=for-the-badge&logo=postgresql&logoColor=white)](https://www.postgresql.org/)
 
 Serviço de avaliação de currículos para avaliar o grau de aderência do currículo com a vaga.
 
@@ -19,10 +20,7 @@ Novas atualizações do projeto podem ser acompanhadas através do X:
 ## Índice
 
 - [Estrutura do Projeto](#estrutura-do-projeto)
-  - [Aplicação Desktop](#aplicação-desktop)
-  - [Projeto Backend API](#projeto-backend-api)
-  - [Integração Contínua](#integração-contínua)
-- [Tencnologias](#tencnologias)
+- [Tecnologias](#tecnologias)
 - [Instalação](#instalação)
 - [Versão Desktop](#versão-desktop)
   - [Build da versão](#build-da-versão)
@@ -31,6 +29,7 @@ Novas atualizações do projeto podem ser acompanhadas através do X:
 - [Projeto Backend API](#projeto-backend-api-1)
   - [Health Check Endpoint](#health-check-endpoint)
   - [API v1](#api-v1)
+  - [Configuração das variáveis de ambiente](#configuração-das-variáveis-de-ambiente)
   - [Documentação de API - Swagger](#documentação-de-api---swagger)
 - [Versionamento](#versionamento)
 - [Contribuições](#contribuições)
@@ -41,101 +40,9 @@ Novas atualizações do projeto podem ser acompanhadas através do X:
 
 ## Estrutura do Projeto
 
-### Aplicação Desktop
+Para uma visão detalhada da estrutura do projeto, consulte o arquivo [PROJECT_STRUCTURE.md](PROJECT_STRUCTURE.md).
 
-```
-desktop/
-├── main.py                 # Ponto de entrada da aplicação
-├── requirements.txt        # Dependências do projeto
-├── build.spec             # Configuração do PyInstaller para compilação
-├── build.py               # Script de build para Windows (Python)
-├── servers                 # Arquivo com lista de servidores disponíveis
-├── images/                # Imagens e ícones da aplicação
-│   ├── favicon.ico        # Ícone da aplicação
-│   ├── favicon.png        # Favicon em formato PNG
-│   └── job_match_logo.png # Logo do Job Match
-├── scripts/               # Scripts SQL de inicialização do banco
-│   ├── 001-Create_Table_Project.sql      # Script de criação da tabela project
-│   └── 002-Create_Table_Job_Vacancy.sql # Script de criação da tabela job_vacancy
-└── src/                   # Código fonte
-    ├── __init__.py
-    ├── app.py             # Classe principal da aplicação
-    ├── ui/                # Componentes de interface
-    │   ├── __init__.py
-    │   ├── main_window.py        # Janela principal com painéis divididos e barra de status
-    │   ├── splash_screen.py     # Tela de splash com barra de progresso
-    │   ├── new_project_dialog.py # Diálogo de cadastro de projeto
-    │   ├── open_project_dialog.py # Diálogo para abrir projeto existente
-    │   ├── new_vacancy_dialog.py # Diálogo de cadastro de vaga
-    │   ├── about_dialog.py       # Diálogo sobre a aplicação
-    │   ├── configuration_dialog.py # Diálogo de configurações
-    │   └── builders/      # Builders de componentes UI
-    │       ├── __init__.py
-    │       └── main_menu.py       # Builder do menu principal
-    ├── entities/          # Entidades de domínio
-    │   ├── __init__.py
-    │   ├── project.py    # Entidade Project com operações de banco
-    │   └── job_vacancy.py # Entidade JobVacancy com operações de banco
-    ├── database/          # Gerenciamento de banco de dados
-    │   ├── __init__.py
-    │   └── db.py          # Classe de gerenciamento do banco SQLite
-    ├── manager/           # Gerenciadores de configuração e recursos
-    │   ├── __init__.py
-    │   ├── base_manager.py        # Classe base para managers
-    │   ├── config_manager.py      # Gerenciador de configurações (config.ini)
-    │   └── server_manager.py      # Gerenciador de servidores
-    ├── interfaces/        # Interfaces e tipos de dados
-    │   ├── __init__.py
-    │   └── server.py      # Interface para estrutura de servidor
-    ├── integration/       # Integrações com serviços externos
-    │   ├── __init__.py
-    │   └── server_integration.py  # Integração com servidores (health check)
-    ├── utils/             # Funções utilitárias
-    │   ├── __init__.py
-    │   └── helpers.py
-    └── config/            # Configurações
-        ├── __init__.py
-        └── settings.py
-```
-
-### Projeto Backend API
-
-```
-api/
-├── app.py              # Aplicação principal Flask
-├── wsgi.py             # Entry point WSGI para Gunicorn
-├── Dockerfile          # Configuração Docker para a API
-├── requirements.txt    # Dependências do projeto
-├── README.md          # Documentação da API
-├── config/            # Configurações
-│   ├── __init__.py
-│   └── settings.py
-├── routes/           # Rotas da API
-│   ├── __init__.py
-│   ├── routes.py
-│   └── swagger/      # Rotas de documentação Swagger
-│       ├── __init__.py
-│       └── swagger.py # Classe para renderizar Swagger UI
-├── swagger/          # Documentação Swagger/OpenAPI
-│   └── pt-BR.yaml    # Especificação OpenAPI em português brasileiro
-├── models/           # Modelos de dados
-│   ├── __init__.py
-│   └── models.py
-└── utils/            # Funções utilitárias
-    ├── __init__.py
-    └── helpers.py
-```
-
-### Integração Contínua
-
-```
-ci-cd/
-└── docker/                  # Configurações Docker para a API
-    ├── docker-compose.yml   # Arquivo de composição Docker
-    └── .dockerignore        # Arquivos ignorados no build Docker
-```
-
-## Tencnologias
+## Tecnologias
 
 - Python 3.11 ou superior (recomendado para suporte completo e contínuo às bibliotecas de IA do Google)
   - Python 3.10 também funciona, mas o suporte será descontinuado em 2026
@@ -145,6 +52,8 @@ ci-cd/
 - Docker Engine 20.10 ou superior
 - Docker Compose 2.0 ou superior
 - Swagger Open API 3.0
+- PostgreSQL 13 ou superior
+- Flask-Migrate (Alembic)
 
 ## Instalação
 
@@ -209,6 +118,10 @@ Caso queira subir a aplicação em um servidor dentro da sua empresa, basta adic
 
 ### API v1
 - Todos os endpoints da API estão disponíveis em `/api/v1`
+
+### Configuração das variáveis de ambiente
+
+A API utiliza variáveis de ambiente para configuração. Copie o arquivo `api/env.example` para `api/.env` e ajuste as variáveis conforme necessário
 
 ### Documentação de API - Swagger
 
