@@ -8,6 +8,7 @@ info:
 
     **Versão 0.1.0**
     - Implementado `POST /api/v1/file` para envio de arquivos DOC, DOCX e PDF que serão convertidos para texto no banco de dados
+    - Implementado `POST /api/v1/user` para criação de usuários com autenticação
   version: 0.1.0
   contact:
     name: Bráulio Figueiredo
@@ -28,6 +29,8 @@ tags:
     description: Endpoints de verificação de saúde da API
   - name: Files
     description: Endpoints para gerenciamento de arquivos
+  - name: Users
+    description: Endpoints para gerenciamento de usuários
 
 paths:
   /health:
@@ -161,6 +164,88 @@ paths:
                     error: "Internal server error"
                     message: "Failed to save file to database: ..."
 
+  /api/v1/user:
+    post:
+      tags:
+        - Users
+      summary: Cria um novo usuário
+      description: |
+        Cria um novo usuário no sistema com email e senha.
+        
+        O usuário será processado para:
+        - Validar formato de email
+        - Validar senha (mínimo 6 caracteres)
+        - Gerar hash da senha usando werkzeug
+        - Gerar UUID v4 único para autenticação
+        
+        **Validações:**
+        - Email é obrigatório e deve ter formato válido
+        - Senha é obrigatória e deve ter no mínimo 6 caracteres
+        - Email deve ser único (não pode já existir no sistema)
+      operationId: createUser
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UserCreateRequest'
+            examples:
+              validUser:
+                summary: Usuário válido
+                value:
+                  email: "usuario@example.com"
+                  password: "senha123"
+      responses:
+        '201':
+          description: Usuário criado com sucesso
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UserCreateResponse'
+              examples:
+                success:
+                  summary: Usuário criado com sucesso
+                  value:
+                    id: 1
+                    email: "usuario@example.com"
+                    hash: "a6d2335e-3536-4397-8635-c94de582eef3"
+                    created_at: "2024-01-15T10:30:00Z"
+                    updated_at: "2024-01-15T10:30:00Z"
+        '400':
+          description: Erro de validação
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+              examples:
+                invalidEmail:
+                  summary: Email inválido
+                  value:
+                    error: "Validation error"
+                    message: "Invalid email format"
+                shortPassword:
+                  summary: Senha muito curta
+                  value:
+                    error: "Validation error"
+                    message: "Password must be at least 6 characters long"
+                duplicateEmail:
+                  summary: Email já existe
+                  value:
+                    error: "Validation error"
+                    message: "User with this email already exists"
+        '500':
+          description: Erro interno do servidor
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+              examples:
+                serverError:
+                  summary: Erro interno
+                  value:
+                    error: "Internal server error"
+                    message: "Failed to create user: ..."
+
 components:
   schemas:
     Error:
@@ -216,6 +301,39 @@ components:
         - hash
         - created_at
         - updated_at
+
+    UserCreateRequest:
+      type: object
+      properties:
+        email:
+          type: string
+          format: email
+          description: Endereço de email do usuário
+          example: "usuario@example.com"
+        password:
+          type: string
+          format: password
+          description: Senha do usuário (mínimo 6 caracteres)
+          example: "senha123"
+      required:
+        - email
+        - password
+
+    UserCreateResponse:
+      type: object
+      properties:
+        email:
+          type: string
+          format: email
+          description: Endereço de email do usuário
+          example: "usuario@example.com"
+        hash:
+          type: string
+          description: Hash UUID v4 gerado para autenticação do usuário
+          example: "a6d2335e-3536-4397-8635-c94de582eef3"
+      required:
+        - email
+        - hash
 
   securitySchemes:
     bearerAuth:

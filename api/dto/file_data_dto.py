@@ -14,4 +14,5 @@ class FileDataDTO:
     extension: str
     hash: str
     content: str
+    checksum: str
     file: Optional[Any] = None  # File object or file content in bytes
