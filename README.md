@@ -26,16 +26,13 @@ Novas atualizações do projeto podem ser acompanhadas através do X:
   - [Build da versão](#build-da-versão)
   - [Arquivos e pastas que precisam ser distribuídos](#arquivos-e-pastas-que-precisam-ser-distribuídos)
   - [Configurações do arquivo servers](#configurações-do-arquivo-servers)
-- [Projeto Backend API](#projeto-backend-api-1)
+- [Projeto Backend API](#projeto-backend-api)
   - [Health Check Endpoint](#health-check-endpoint)
   - [API v1](#api-v1)
   - [Configuração das variáveis de ambiente](#configuração-das-variáveis-de-ambiente)
+  - [Troubleshooting - Docling no Windows](#troubleshooting---docling-no-windows)
   - [Documentação de API - Swagger](#documentação-de-api---swagger)
 - [Versionamento](#versionamento)
-- [Contribuições](#contribuições)
-  - [Contribuindo com Código](#contribuindo-com-código)
-  - [Reportando Bugs](#reportando-bugs)
-  - [Sugerindo Novas Funcionalidades](#sugerindo-novas-funcionalidades)
 - [Autor](#autor)
 
 ## Estrutura do Projeto
@@ -54,6 +51,7 @@ Para uma visão detalhada da estrutura do projeto, consulte o arquivo [PROJECT_S
 - Swagger Open API 3.0
 - PostgreSQL 13 ou superior
 - Flask-Migrate (Alembic)
+- Dockling
 
 ## Instalação
 
@@ -123,6 +121,20 @@ Caso queira subir a aplicação em um servidor dentro da sua empresa, basta adic
 
 A API utiliza variáveis de ambiente para configuração. Copie o arquivo `api/env.example` para `api/.env` e ajuste as variáveis conforme necessário
 
+### Troubleshooting - Docling no Windows
+
+Se você receber um erro como:
+```
+[WinError 1314] O cliente não tem o privilégio necessário
+```
+
+Isso ocorre porque o Hugging Face Hub (usado pelo docling) está tentando criar symlinks no Windows sem permissões adequadas. Para isso ative as configurações de desenvolvedor no windows
+
+1. Abra **Configurações** do Windows
+2. Vá para **Atualização e Segurança** > **Para desenvolvedores**
+3. Ative o **Modo de Desenvolvedor**
+4. Reinicie o computador
+
 ### Documentação de API - Swagger
 
 A API possui documentação interativa usando Swagger/OpenAPI 3.0. A documentação está disponível em português brasileiro e pode ser acessada através dos seguintes endpoints:
@@ -161,42 +173,6 @@ Construído sobre as seguintes diretrizes:
 * Correção de erros em "correção"
 
 Para mais informações sobre o SemVer, por favor visite http://semver.org.
-
-## Contribuições
-
-Contribuições são sempre bem-vindas! Existem várias formas de contribuir com o projeto Job Match:
-
-### Contribuindo com Código
-
-Se você tem conhecimento em programação, pode contribuir diretamente com o código:
-
-1. **Fork o projeto** no GitHub
-2. **Crie uma branch** para sua feature ou correção (`git checkout -b feature/MinhaNovaFuncionalidade`)
-3. **Faça suas alterações** seguindo os padrões do projeto
-4. **Commit suas mudanças** com mensagens claras e descritivas (`git commit -m 'Adiciona nova funcionalidade X'`)
-5. **Push para a branch** (`git push origin feature/MinhaNovaFuncionalidade`)
-6. **Abra um Pull Request** descrevendo suas alterações
-
-### Reportando Bugs
-
-Encontrou um bug? Ajude-nos a melhorar o projeto reportando-o:
-
-- Abra uma [Issue](https://github.com/braulioti/job_match/issues) no GitHub
-- Descreva o problema de forma clara e objetiva
-- Inclua passos para reproduzir o bug
-- Se possível, inclua screenshots ou logs de erro
-- Informe a versão do Job Match e seu sistema operacional
-
-### Sugerindo Novas Funcionalidades
-
-Tem uma ideia para melhorar o Job Match? Compartilhe conosco:
-
-- Abra uma [Issue](https://github.com/braulioti/job_match/issues) no GitHub
-- Descreva a funcionalidade proposta de forma detalhada
-- Explique o problema que ela resolveria ou o benefício que traria
-- Se tiver exemplos ou mockups, compartilhe também
-
-Todas as contribuições, sejam de código, relatórios de bugs ou sugestões, são valiosas para o crescimento do projeto. Obrigado por ajudar a tornar o Job Match melhor!
 
 ## Autor
 - Email: braulio@braulioti.com.br

@@ -8,3 +8,4 @@ CREATE TABLE IF NOT EXISTS job_vacancy (
     FOREIGN KEY (project_id) REFERENCES project(id) ON DELETE CASCADE
 );
 
+

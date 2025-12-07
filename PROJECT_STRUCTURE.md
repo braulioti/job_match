@@ -94,13 +94,16 @@ api/
 │       └── 001_create_file_table.py  # Migration inicial da tabela file
 ├── dto/                # Data Transfer Objects
 │   ├── __init__.py
-│   └── job_analysis_dto.py  # DTO para requisições de análise de vagas
+│   ├── job_analysis_dto.py  # DTO para requisições de análise de vagas
+│   └── file_data_dto.py     # DTO para dados de arquivos validados
 ├── controller/         # Controladores (camada de controle)
 │   ├── __init__.py
-│   └── ia_controller.py    # Controller para processamento de IA
+│   ├── ia_controller.py    # Controller para processamento de IA
+│   └── file_controller.py  # Controller para operações de upload de arquivos
 ├── services/           # Serviços (lógica de negócio)
 │   ├── __init__.py
-│   └── ia_service.py   # Serviço de processamento de IA
+│   ├── ia_service.py   # Serviço de processamento de IA
+│   └── file_service.py # Serviço para validação e processamento de arquivos (conversão DOC/PDF para texto)
 ├── integration/        # Integrações com serviços externos
 │   ├── __init__.py
 │   └── provider/       # Provedores de IA
