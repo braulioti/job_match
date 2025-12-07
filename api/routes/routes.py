@@ -5,6 +5,7 @@ API Routes
 from flask import Blueprint, jsonify, request
 
 from api.controller.ia_controller import IAController
+from api.controller.file_controller import FileController
 
 api_bp = Blueprint('api', __name__)
 
@@ -32,4 +33,26 @@ def process():
     """
     data = request.get_json()
     response, status_code = IAController.process(data)
+    return jsonify(response), status_code
+
+
+@api_bp.route('/file', methods=['POST'])
+def upload_file():
+    """
+    Upload a file
+    
+    Request should contain:
+    - file: The file to be uploaded (multipart/form-data)
+    
+    Returns:
+    - File information including ID, hash, and metadata
+    """
+    if 'file' not in request.files:
+        return jsonify({
+            'error': 'Bad request',
+            'message': 'No file provided'
+        }), 400
+    
+    file = request.files['file']
+    response, status_code = FileController.upload_file(file)
     return jsonify(response), status_code

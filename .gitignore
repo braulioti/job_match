@@ -36,6 +36,7 @@ ENV/
 # Application specific
 data/
 logs/
+files/
 *.log
 
 # PyInstaller

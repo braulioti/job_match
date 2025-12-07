@@ -1,8 +1,14 @@
 openapi: 3.0.3
 info:
   title: Job Match API
-  description: API REST para avaliação de currículos e correspondência com vagas
-  version: 1.0.0
+  description: |
+    ## API REST para avaliação de currículos e correspondência com vagas
+
+    ### Changelog
+
+    **Versão 0.1.0**
+    - Implementado `POST /api/v1/file` para envio de arquivos DOC, DOCX e PDF que serão convertidos para texto no banco de dados
+  version: 0.1.0
   contact:
     name: Bráulio Figueiredo
     email: braulio@braulioti.com.br
@@ -20,6 +26,8 @@ servers:
 tags:
   - name: Health
     description: Endpoints de verificação de saúde da API
+  - name: Files
+    description: Endpoints para gerenciamento de arquivos
 
 paths:
   /health:
@@ -71,6 +79,87 @@ paths:
                       health:
                         type: string
                         example: /health
+  /api/v1/file:
+    post:
+      tags:
+        - Files
+      summary: Faz upload de um arquivo
+      description: |
+        Faz upload de um arquivo e armazena seus metadados no banco de dados PostgreSQL.
+        
+        O arquivo será processado para:
+        - Gerar um UUID v4 único para o arquivo
+        - Extrair metadados (nome original, extensão)
+        - Converter e extrair conteúdo de texto para arquivos DOC e PDF
+        
+        **Formatos suportados:**
+        - Conversão automática para MD: .doc, .docx e .pdf
+        - Somente formatos que possam ser convertidos serão válidos
+        
+        **Validações:**
+        - Arquivo não pode estar vazio
+        - Arquivo deve ser fornecido no campo 'file' do formulário
+      operationId: uploadFile
+      requestBody:
+        required: true
+        content:
+          multipart/form-data:
+            schema:
+              type: object
+              required:
+                - file
+              properties:
+                file:
+                  type: string
+                  format: binary
+                  description: Arquivo a ser enviado (multipart/form-data)
+            encoding:
+              file:
+                contentType: application/octet-stream
+      responses:
+        '201':
+          description: Arquivo enviado com sucesso
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/FileUploadResponse'
+              examples:
+                success:
+                  summary: Upload bem-sucedido
+                  value:
+                    original_file_name: "curriculum.pdf"
+                    hash: "a6d2335e-3536-4397-8635-c94de582eef3"
+                    created_at: "2024-01-15T10:30:00Z"
+                    updated_at: "2024-01-15T10:30:00Z"
+        '400':
+          description: Erro de validação (arquivo vazio ou não fornecido)
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+              examples:
+                noFile:
+                  summary: Nenhum arquivo fornecido
+                  value:
+                    error: "Bad request"
+                    message: "No file provided"
+                emptyFile:
+                  summary: Arquivo vazio
+                  value:
+                    error: "Bad request"
+                    message: "File is empty"
+        '500':
+          description: Erro interno do servidor
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+              examples:
+                serverError:
+                  summary: Erro interno
+                  value:
+                    error: "Internal server error"
+                    message: "Failed to save file to database: ..."
 
 components:
   schemas:
@@ -83,6 +172,50 @@ components:
           example: Name is required
       required:
         - error
+    
+    ErrorResponse:
+      type: object
+      properties:
+        error:
+          type: string
+          description: Tipo do erro
+          example: Validation error
+        message:
+          type: string
+          description: Mensagem detalhada do erro
+          example: job_vacancy cannot be empty
+      required:
+        - error
+        - message
+
+    FileUploadResponse:
+      type: object
+      properties:
+        original_file_name:
+          type: string
+          description: Nome original do arquivo enviado
+          example: curriculum.pdf
+        hash:
+          type: string
+          description: Hash UUID v4 gerado para o arquivo
+          example: a6d2335e-3536-4397-8635-c94de582eef3
+        created_at:
+          type: string
+          format: date-time
+          nullable: true
+          description: Data e hora de criação do registro
+          example: "2024-01-15T10:30:00Z"
+        updated_at:
+          type: string
+          format: date-time
+          nullable: true
+          description: Data e hora da última atualização do registro
+          example: "2024-01-15T10:30:00Z"
+      required:
+        - original_file_name
+        - hash
+        - created_at
+        - updated_at
 
   securitySchemes:
     bearerAuth:
